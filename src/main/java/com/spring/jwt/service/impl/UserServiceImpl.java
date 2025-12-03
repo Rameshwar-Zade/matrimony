@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
         user.setEmailVerified(true);
         User.ProfileType profileType = User.ProfileType.fromDisplay(userDTO.getProfile());
         user.setProfile(profileType);
+        user.setLastLogin(LocalDateTime.now());
         Set<Role> roles = new HashSet<>();
 
         Role role = roleRepository.findByName(userDTO.getRole());
@@ -132,6 +133,7 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
 
 
 //    @Transactional

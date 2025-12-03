@@ -3,6 +3,8 @@ package com.spring.jwt.dto;
 import com.spring.jwt.entity.Role;
 import com.spring.jwt.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,29 +22,41 @@ public class UserDTO {
     @Schema(description = "userId of User", example = "10011")
     private Integer userId;
 
-    @Schema(description = "Email of User", example = "example@example.com")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
+    @Pattern(
+            regexp = "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$",
+            message = "Invalid email format"
+    )
     private String email;
 
-    @Schema(description = "Mobile Number of the customer", example = "9822222212")
+    @Pattern(
+            regexp = "^[6-9][0-9]{9}$",
+            message = "Mobile number must start with 6-9 and be exactly 10 digits"
+    )
     private String mobileNumber;
 
     @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$",
-            message = "Password must be 8+ chars, include upper, lower, digit and special character"
+            regexp = "Male|Female",
+            message = "Gender must be Male or Female"
+    )
+    private String gender;
+
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$",
+            message = "Password must be at least 8 characters long, include 1 uppercase, 1 number, and 1 special character"
     )
     private String password;
 
+
+    @Pattern(
+            regexp = "SON|DAUGHTER|SISTER|RELATIVE_FRIEND|CLIENT_MARRIAGE_BUREAU",
+            message = "Invalid profile. Valid values: SON, DAUGHTER, SISTER, RELATIVE_FRIEND, CLIENT_MARRIAGE_BUREAU"
+    )
     private String profile;
 
 
     private Set<String> roles;
-
-    @Schema(description = "Gender of user", example = "Male")
-    private String gender;
-
-
-
-
 //    @Schema(
 //    description = "Address of the customer", example = "A/P Pune Main Street Block no 8"
 //    )
@@ -58,10 +72,12 @@ public class UserDTO {
 //    )
 //    private String lastName;
 
+    @Pattern(
+            regexp = "USER|ADMIN",
+            message = "Invalid role. Valid options: USER, ADMIN"
+    )
+    private String role;
 
-
-
-    private String role; // Single role field for backward compatibility
 
     public UserDTO(User user) {
         this.email = user.getEmail();

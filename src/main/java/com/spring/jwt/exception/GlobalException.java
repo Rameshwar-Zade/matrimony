@@ -222,17 +222,15 @@ public class GlobalException extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        log.error("Validation error: {}", ex.getMessage());
         Map<String, String> validationErrors = new HashMap<>();
-        List<ObjectError> validationErrorList = ex.getBindingResult().getAllErrors();
 
-        validationErrorList.forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String validationMsg = error.getDefaultMessage();
-            validationErrors.put(fieldName, validationMsg);
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            validationErrors.put(error.getField(), error.getDefaultMessage());
         });
+
         return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
     }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
@@ -258,15 +256,18 @@ public class GlobalException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(Exception exception, WebRequest webRequest) {
-        log.error("Uncaught error occurred: ", exception);
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+        log.error("Error:", exception);
+
+        ErrorResponseDto error = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                "An unexpected error occurred",
+                exception.getMessage(),   // <- show real error
                 LocalDateTime.now()
         );
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @ExceptionHandler(ExamTimeWindowException.class)
     public ResponseEntity<ErrorResponseDto> handleExamTimeWindowException(ExamTimeWindowException exception, WebRequest webRequest){
@@ -313,8 +314,5 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         error.put("error", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
-
-
 
 }
