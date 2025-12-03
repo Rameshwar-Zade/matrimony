@@ -1,0 +1,37 @@
+package com.spring.jwt.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "expectation_complete")
+@Getter
+@Setter
+@NoArgsConstructor
+public class ExpectationsComplete {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    private Integer ageFrom;
+    private Integer ageTo;
+
+    private Integer heightFeet;
+    private Integer heightInches;
+
+    private String lookingFor;
+    private String caste;
+    private String education;
+    private String residentStatus;
+    private String preference;
+    private String country;
+    private String eatingHabits;
+    private String religion;
+    private String complexion;
+}
