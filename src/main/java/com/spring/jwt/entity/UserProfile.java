@@ -38,7 +38,7 @@ public class UserProfile {
     private Integer pinCode;
 
     @Column(nullable = false)
-    private String mobileNumber;
+    private Long mobileNumber;
 
     @Column(nullable = false)
     private String mail;

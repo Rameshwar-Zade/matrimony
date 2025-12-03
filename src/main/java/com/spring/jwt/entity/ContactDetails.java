@@ -1,9 +1,6 @@
 package com.spring.jwt.entity;
 
 import jakarta.persistence.*;
-
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +16,7 @@ public class ContactDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contactNumberId;
 
-    @Column(length = 45)
+    @Column(nullable = false, length = 45)
     private String fullAddress;
 
     @Column(length = 45, nullable = false)
@@ -36,6 +33,10 @@ public class ContactDetails {
 
     @OneToOne(mappedBy = "contactNumber")
     private Status status;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 
 

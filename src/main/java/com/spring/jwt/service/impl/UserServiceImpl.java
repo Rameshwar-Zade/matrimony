@@ -189,14 +189,14 @@ public class UserServiceImpl implements UserService {
     private void createAdminProfile(User user, UserDTO userDTO) {
     }
 
-    private void createUserProfile(User user, UserDTO userDTO) {
-        UserProfile userProfile = new UserProfile();
-        userProfile.setMail(userDTO.getEmail());
-        userProfile.setMobileNumber(userDTO.getMobileNumber());
-        userProfile.setUser(user);
-        userProfileRepository.save(userProfile);
-        log.info("Created  profile for user ID: {}", user.getId());
-    }
+//    private void createUserProfile(User user, UserDTO userDTO) {
+//        UserProfile userProfile = new UserProfile();
+//        userProfile.setMail(userDTO.getEmail());
+//        userProfile.setMobileNumber(userDTO.getMobileNumber());
+//        userProfile.setUser(user);
+//        userProfileRepository.save(userProfile);
+//        log.info("Created  profile for user ID: {}", user.getId());
+//    }
 
 //    private void createUserProfile(User user, UserDTO userDTO) {
 //        UserProfile student = new UserProfile();

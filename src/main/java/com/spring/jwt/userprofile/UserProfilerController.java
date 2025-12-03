@@ -1,4 +1,4 @@
-package com.spring.jwt.userprofileF;
+package com.spring.jwt.userprofile;
 
 import com.spring.jwt.entity.UserProfile;
 import jakarta.validation.Valid;
@@ -24,6 +24,12 @@ public class UserProfilerController {
     public ResponseEntity<UserProfile> update(@PathVariable Integer id, @RequestBody UserProfileDto dto) {
         UserProfile updated = service.updateUserProfile(id, dto);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<UserProfile> get(){
+        UserProfile profile=service.getProfile();
+        return ResponseEntity.ok(profile);
     }
 
 }

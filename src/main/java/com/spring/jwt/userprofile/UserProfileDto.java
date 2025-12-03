@@ -1,4 +1,4 @@
-package com.spring.jwt.userprofileF;
+package com.spring.jwt.userprofile;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -35,7 +35,7 @@ public class UserProfileDto {
     private Integer pinCode;
 
     @NotNull(message = "Please Enter mobileNumber")
-    private String mobileNumber;
+    private Long mobileNumber;
 
     @NotBlank(message = "Please Enter mail")
     @Email(message = "mail must be a valid email address")
