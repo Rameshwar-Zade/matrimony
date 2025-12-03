@@ -26,19 +26,11 @@ public class User {
     @Column(name = "user_id")
     private Integer id;
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
-    @Pattern(
-            regexp = "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$",
-            message = "Invalid email format"
-    )
     @Column(nullable = false, unique = true, length = 250)
     private String email;
 
-    @Pattern(
-            regexp = "^[6-9][0-9]{9}$",
-            message = "Mobile number must start with 6-9 and be exactly 10 digits"
-    )
+
+
     @Column(name = "mobile_no", nullable = false)
     private String mobileNumber;;
 
@@ -68,10 +60,14 @@ public class User {
 
         public static ProfileType fromDisplay(String value){
             return Arrays.stream(values())
-                    .filter(p -> p.display.equalsIgnoreCase(value))
+                    .filter(p ->
+                            p.display.equalsIgnoreCase(value) ||
+                                    p.name().equalsIgnoreCase(value)
+                    )
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Invalid profile name: " + value));
         }
+
     }
 
 
