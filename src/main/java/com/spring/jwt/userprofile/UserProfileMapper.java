@@ -38,7 +38,6 @@ public class UserProfileMapper {
         dto.setNativeTaluka(userProfile.getNativeTaluka());
         dto.setCurrentCity(userProfile.getCurrentCity());
         dto.setUserProfileCol(userProfile.getUserProfileCol());
-
         return dto;
     }
 
