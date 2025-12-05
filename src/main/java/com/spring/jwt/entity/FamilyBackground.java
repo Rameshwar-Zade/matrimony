@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,7 @@ import lombok.Setter;
 @Table(name = "family_background")
 @Getter
 @Setter
+@Data
 public class FamilyBackground {
 
     @Id
@@ -60,5 +63,7 @@ public class FamilyBackground {
 
     @OneToOne(mappedBy = "familyBackground")
     private Status status;
+
+
 
 }

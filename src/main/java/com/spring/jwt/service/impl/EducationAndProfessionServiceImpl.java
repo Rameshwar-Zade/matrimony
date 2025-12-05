@@ -54,7 +54,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
                         "Education & Profession not found with id: " + id));
         try {
             educationAndProfession.setEducation(dto.getEducation());
-            educationAndProfession.setDegree(dto.getDegree());
+            educationAndProfession.setEducationDetails(dto.getEducationDetails());
             educationAndProfession.setOccupation(dto.getOccupation());
             educationAndProfession.setOccupationDetails(dto.getOccupationDetails());
             educationAndProfession.setIncomePerYear(dto.getIncomePerYear());
