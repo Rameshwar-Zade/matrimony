@@ -70,10 +70,6 @@ public class User {
 
     }
 
-
-
-
-
     @Pattern(regexp = "Male|Female", message = "Gender must be Male or Female")
     @Column(nullable = false)
     private String gender;
