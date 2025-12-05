@@ -28,7 +28,7 @@ public class ExpectationsComplete {
 
     private String lookingFor;
     private String caste;
-    @NotBlank
+
     private String education;
     private String residentStatus;
     private String preference;
