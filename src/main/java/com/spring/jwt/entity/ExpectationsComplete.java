@@ -1,5 +1,6 @@
 package com.spring.jwt.entity;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class ExpectationsComplete {
 
     private String lookingFor;
     private String caste;
+    @NotBlank
     private String education;
     private String residentStatus;
     private String preference;
