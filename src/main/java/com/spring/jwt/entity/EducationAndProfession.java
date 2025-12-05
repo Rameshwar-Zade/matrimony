@@ -41,8 +41,12 @@ public class EducationAndProfession {
     @Column(length = 45)
     private String educationAndProfessionalDetailsCol;
 
-    @Column
-    private Integer userId;
+//    @Column
+//    private Integer userId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     @OneToOne(mappedBy = "educationAndProfessionalDetails")
     private Status status;

@@ -38,7 +38,7 @@ public class UserProfileDto {
     private Long mobileNumber;
 
     @NotBlank(message = "Please Enter mail")
-    @Email(message = "mail must be a valid email address")
+    @Email(message = "must be a valid email address")
     private String mail;
 
     @NotBlank(message = "status is required")
@@ -48,12 +48,17 @@ public class UserProfileDto {
     private String gender;
 
     @NotBlank(message = "Please Enter religion")
+    //@Pattern(regexp = "^[A-Za-z\\s'\\-]+$", message = "Please Enter Valid Religion")
     private String religion;
 
     @NotBlank(message = "Please Enter caste")
+    @Pattern(regexp = "^[A-Za-z\\s'\\-]+$", message = "Enter Valid Caste")
     private String caste;
 
-    @NotBlank(message = "Please Select maritalStatus")
+    @NotBlank(message = "Enter Valid Sub-Caste")
+    private String subCaste;
+
+    @NotBlank(message = "Please Choose Option.")
     private String maritalStatus;
 
     @NotNull(message = "Please Enter height")
@@ -92,4 +97,13 @@ public class UserProfileDto {
 
     @NotBlank(message = "userProfileCol")
     private String userProfileCol;
+
+
+    @AssertTrue(message = "Mobile number must be 10 digits and start with 6-9")
+    public boolean isMobileValid() {
+        if (mobileNumber == null) return false;
+        String number = String.valueOf(mobileNumber);
+        return number.matches("^[6-9]\\d{9}$");
+    }
+
 }

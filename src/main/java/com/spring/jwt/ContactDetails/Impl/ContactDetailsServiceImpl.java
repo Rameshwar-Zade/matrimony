@@ -3,6 +3,7 @@ package com.spring.jwt.ContactDetails.Impl;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 
+import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ContactDetailsRepository;
 import com.spring.jwt.ContactDetails.ContactDetailsService;
@@ -10,9 +11,11 @@ import com.spring.jwt.dto.ContactDetailsDTO;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -32,13 +35,20 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
 
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundExceptions("Authenticated user not found", HttpStatus.UNAUTHORIZED);
+        }
 
+        ContactDetails existing = contactDetailsRepo.findByUserId(user.getId());
+        if (existing != null) {
+           throw new ResponseStatusException(HttpStatus.CONFLICT, "Contact details already exist for this user");
+        }
             ContactDetails contact=new ContactDetails();
 
             contact.setFullAddress(dto.getFullAddress());
             contact.setCity(dto.getCity());
             contact.setPinCode(dto.getPinCode());
-            contact.setMoNumber(dto.getMoNumber());
+            contact.setMobileNumber(dto.getMobileNumber());
             contact.setAlternateNumber(dto.getAlternateNumber());
             contact.setUser(user);
             contactDetailsRepo.save(contact);

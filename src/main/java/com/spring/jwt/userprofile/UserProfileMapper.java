@@ -25,6 +25,7 @@ public class UserProfileMapper {
         dto.setGender(userProfile.getGender());
         dto.setReligion(userProfile.getReligion());
         dto.setCaste(userProfile.getCaste());
+        dto.setSubCaste(userProfile.getSubCaste());
         dto.setMaritalStatus(userProfile.getMaritalStatus());
         dto.setHeight(userProfile.getHeight());
         dto.setWeight(userProfile.getWeight());
@@ -61,6 +62,7 @@ public class UserProfileMapper {
         userProfile.setGender(dto.getGender());
         userProfile.setReligion(dto.getReligion());
         userProfile.setCaste(dto.getCaste());
+        userProfile.setSubCaste(dto.getSubCaste());
         userProfile.setMaritalStatus(dto.getMaritalStatus());
         userProfile.setHeight(dto.getHeight());
         userProfile.setWeight(dto.getWeight());

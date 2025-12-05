@@ -44,11 +44,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
 
-    @Override
-    public UserProfile updateUserProfile(Integer userId, UserProfileDto dto) {
-        UserProfile userProfile=userProfileRepository.findByUserId(userId);
-        return userProfileRepository.save(userProfile);
-    }
+//    @Override
+//    public UserProfile updateUserProfile(Integer userId, UserProfileDto dto) {
+//        UserProfile userProfile=userProfileRepository.findByUserId(userId);
+//        return userProfileRepository.save(userProfile);
+//    }
 
     @Override
     public UserProfile getProfile() {

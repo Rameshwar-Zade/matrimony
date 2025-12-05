@@ -16,20 +16,21 @@ public class ContactDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contactNumberId;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 100)
     private String fullAddress;
 
     @Column(length = 45, nullable = false)
     private String city;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 6, nullable = false)
     private Integer pinCode;
+    //Pincode must be 6 digits and valid
 
-    @Column(length = 45, nullable = false, unique = true)
-    private Long moNumber;
+    @Column(length = 10, nullable = false, unique = true)
+    private Long mobileNumber;
 
-    @Column(length = 45, nullable = false)
-    private Integer alternateNumber;
+    @Column(length = 10, nullable = false)
+    private Long alternateNumber;
 
     @OneToOne(mappedBy = "contactNumber")
     private Status status;

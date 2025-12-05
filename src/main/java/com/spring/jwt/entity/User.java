@@ -29,8 +29,6 @@ public class User {
     @Column(nullable = false, unique = true, length = 250)
     private String email;
 
-
-
     @Column(name = "mobile_no", nullable = false)
     private String mobileNumber;;
 
@@ -42,7 +40,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "profile", nullable = false)
     private ProfileType profile;
-
 
     public enum ProfileType {
 
@@ -69,10 +66,6 @@ public class User {
         }
 
     }
-
-
-
-
 
     @Pattern(regexp = "Male|Female", message = "Gender must be Male or Female")
     @Column(nullable = false)
@@ -107,6 +100,9 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<Role> roles;
+
+    @OneToOne(mappedBy = "user")
+    private EducationAndProfession educationAndProfession;
 
 
 }

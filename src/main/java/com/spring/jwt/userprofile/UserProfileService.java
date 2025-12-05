@@ -7,7 +7,7 @@ public interface UserProfileService {
 
     UserProfile create(UserProfileDto dto);
 
-    UserProfile updateUserProfile(Integer id, UserProfileDto dto);
+    //UserProfile updateUserProfile(Integer id, UserProfileDto dto);
 
     UserProfile getProfile();
 
