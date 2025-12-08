@@ -48,6 +48,20 @@ public class PartnerExpectationController {
         return ResponseEntity.ok(partnerService.updateExpectations(userId, dto));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(@RequestHeader("Authorization") String auth) {
+        // Only token validity is checked - userId not required
+        return ResponseEntity.ok(partnerService.getAllExpectations());
+    }
+
+    // 🔹 PATCH EXPECTATION (PARTIAL UPDATE)
+    @PatchMapping("/patch")
+    public ResponseEntity<?> patch(@RequestHeader("Authorization") String auth,
+                                   @RequestBody PartnerExpectationDTO dto) {
+        Long userId = getUserId(auth);
+        return ResponseEntity.ok(partnerService.patchExpectations(userId, dto));
+    }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestHeader("Authorization") String auth) {

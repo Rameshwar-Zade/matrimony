@@ -3,16 +3,16 @@ package com.spring.jwt.service.impl;
 import com.spring.jwt.dto.PartnerExpectationDTO;
 import com.spring.jwt.entity.ExpectationCompleteProfile;
 import com.spring.jwt.entity.ExpectationsComplete;
-import com.spring.jwt.entity.HorosCopeCompleteProfile;
 
 import com.spring.jwt.repository.ExpectationCompleteProfileRepository;
 import com.spring.jwt.repository.ExpectationsCompleteRepository;
-import com.spring.jwt.repository.HorosCopeCompleteProfileRepository;
 import com.spring.jwt.service.PartnerExpectationService;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,10 +22,8 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     private ExpectationsCompleteRepository expectationsRepo;
 
     @Autowired
-    private HorosCopeCompleteProfileRepository horosCopeCompleteRepo;
-
-    @Autowired
     private ExpectationCompleteProfileRepository expectationCompleteRepo;
+
 
     @Override
     public Long saveExpectations(Long userId, PartnerExpectationDTO dto) {
@@ -51,21 +49,13 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
         entity.setReligion(dto.getReligion());
         entity.setComplexion(dto.getComplexion());
 
-        // Save expectation
         ExpectationsComplete saved = expectationsRepo.save(entity);
 
-        // Get horoscope ID
-        Long horoscopeId = horosCopeCompleteRepo.findByUserId(userId)
-                .map(HorosCopeCompleteProfile::getHoroscopeId)
-                .orElse(null);
-
-        // Update link table
-        ExpectationCompleteProfile link = expectationCompleteRepo
-                .findByUserId(userId)
-                .orElse(new ExpectationCompleteProfile());
+        ExpectationCompleteProfile link =
+                expectationCompleteRepo.findByUserId(userId)
+                        .orElse(new ExpectationCompleteProfile());
 
         link.setUserId(userId);
-        link.setHoroscopeId(horoscopeId);
         link.setPartnerExpectationId(saved.getId());
 
         expectationCompleteRepo.save(link);
@@ -76,6 +66,11 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     @Override
     public ExpectationsComplete getExpectations(Long userId) {
         return expectationsRepo.findByUserId(userId);
+    }
+
+    @Override
+    public List<ExpectationsComplete> getAllExpectations() {
+        return expectationsRepo.findAll();
     }
 
     @Override
@@ -100,6 +95,32 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
         existing.setEatingHabits(dto.getEatingHabits());
         existing.setReligion(dto.getReligion());
         existing.setComplexion(dto.getComplexion());
+
+        return expectationsRepo.save(existing);
+    }
+
+    @Override
+    public ExpectationsComplete patchExpectations(Long userId, PartnerExpectationDTO dto) {
+
+        ExpectationsComplete existing = expectationsRepo.findByUserId(userId);
+
+        if (existing == null) {
+            throw new RuntimeException("No expectation data found");
+        }
+
+        if (dto.getAgeFrom() != null) existing.setAgeFrom(dto.getAgeFrom());
+        if (dto.getAgeTo() != null) existing.setAgeTo(dto.getAgeTo());
+        if (dto.getHeightFeet() != null) existing.setHeightFeet(dto.getHeightFeet());
+        if (dto.getHeightInches() != null) existing.setHeightInches(dto.getHeightInches());
+        if (dto.getLookingFor() != null) existing.setLookingFor(dto.getLookingFor());
+        if (dto.getCaste() != null) existing.setCaste(dto.getCaste());
+        if (dto.getEducation() != null) existing.setEducation(dto.getEducation());
+        if (dto.getResidentStatus() != null) existing.setResidentStatus(dto.getResidentStatus());
+        if (dto.getPreference() != null) existing.setPreference(dto.getPreference());
+        if (dto.getCountry() != null) existing.setCountry(dto.getCountry());
+        if (dto.getEatingHabits() != null) existing.setEatingHabits(dto.getEatingHabits());
+        if (dto.getReligion() != null) existing.setReligion(dto.getReligion());
+        if (dto.getComplexion() != null) existing.setComplexion(dto.getComplexion());
 
         return expectationsRepo.save(existing);
     }

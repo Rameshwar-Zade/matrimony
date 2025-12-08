@@ -20,7 +20,12 @@ public class HoroscopeDetails {
     @Id
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer horoscopeDetailsId;
+    private Integer horoscopeDetailsId; // PRIMARY KEY of table
+
+
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Integer userId;
+
 
     @Column(length = 45, nullable = false)
     private Date dob;
@@ -49,7 +54,7 @@ public class HoroscopeDetails {
     @Column(length = 45, nullable = false)
     private String mangal;
 
-    @Column(length = 45,nullable = false)
+    @Column(length = 45, nullable = false)
     private String gotra;
 
     @Column(length = 45, nullable = false)
@@ -58,10 +63,7 @@ public class HoroscopeDetails {
     @Column(length = 45)
     private String status1;
 
-    @Column
-    private Integer userId;
 
     @OneToOne(mappedBy = "horoscopeDetails")
     private Status status;
-
 }

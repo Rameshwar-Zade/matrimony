@@ -2,12 +2,13 @@ package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.HoroscopeDetailsRequestDTO;
 import com.spring.jwt.dto.HoroscopeDetailsResponseDTO;
-import com.spring.jwt.entity.HorosCopeCompleteProfile;
+import com.spring.jwt.entity.ExpectationCompleteProfile;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.mapper.HoroscopeDetailsMapper;
-import com.spring.jwt.repository.HorosCopeCompleteProfileRepository;
+import com.spring.jwt.repository.ExpectationCompleteProfileRepository;
 import com.spring.jwt.repository.HoroscopeDetailsRepository;
 import com.spring.jwt.service.HoroscopeDetailsService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
 
     private final HoroscopeDetailsRepository repository;
-    private final HorosCopeCompleteProfileRepository completeProfileRepository;
+    private final ExpectationCompleteProfileRepository expectationCompleteProfileRepository;
 
     @Override
     public HoroscopeDetailsResponseDTO createHoroscope(HoroscopeDetailsRequestDTO dto) {
@@ -28,14 +29,18 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
         HoroscopeDetails entity = HoroscopeDetailsMapper.toEntity(dto);
         HoroscopeDetails saved = repository.save(entity);
 
-        // Save mapping (user ↔ horoscope)
-        HorosCopeCompleteProfile cp = new HorosCopeCompleteProfile();
+        Long userId = dto.getUserId().longValue();
+        Long horoscopeId = saved.getHoroscopeDetailsId().longValue();
 
-        // FIX: Convert to Long
-        cp.setUserId(dto.getUserId().longValue());
-        cp.setHoroscopeId(saved.getHoroscopeDetailsId().longValue());
+        // Update expectations_complete_profile table
+        ExpectationCompleteProfile cp =
+                expectationCompleteProfileRepository.findByUserId(userId)
+                        .orElse(new ExpectationCompleteProfile());
 
-        completeProfileRepository.save(cp);
+        cp.setUserId(userId);
+        cp.setHoroscopeId(horoscopeId);
+
+        expectationCompleteProfileRepository.save(cp);
 
         return HoroscopeDetailsMapper.toDTO(saved);
     }
@@ -61,8 +66,8 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
                 .orElseThrow(() -> new RuntimeException("Horoscope not found"));
 
         HoroscopeDetailsMapper.updateEntity(entity, dto);
-        HoroscopeDetails updated = repository.save(entity);
 
+        HoroscopeDetails updated = repository.save(entity);
         return HoroscopeDetailsMapper.toDTO(updated);
     }
 
@@ -72,8 +77,8 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
                 .orElseThrow(() -> new RuntimeException("Horoscope not found"));
 
         HoroscopeDetailsMapper.patchEntity(entity, dto);
-        HoroscopeDetails updated = repository.save(entity);
 
+        HoroscopeDetails updated = repository.save(entity);
         return HoroscopeDetailsMapper.toDTO(updated);
     }
 

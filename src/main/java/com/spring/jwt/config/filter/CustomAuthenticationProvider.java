@@ -51,7 +51,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             if (user == null) {
                 throw new BadCredentialsException("Invalid refresh token");
             }
-            
+
             return authentication;
         }
 
