@@ -21,7 +21,6 @@ public class EducationAndProfessionMapper {
         dto.setStatus(entity.getStatus1());
         dto.setEducationAndProfessionalDetailsCol(entity.getEducationAndProfessionalDetailsCol());
         dto.setUserId(entity.getUser().getId());
-
         return dto;
     }
 

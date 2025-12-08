@@ -23,7 +23,7 @@ public class FamilyBackgroundMapper {
         familyBackgroundDto.setMamaPlace(entity.getMamaPlace());
         familyBackgroundDto.setFamilyBackgroundCol(entity.getFamilyBackgroundCol());
         familyBackgroundDto.setRelativeSurnames(entity.getRelativeSurnames());
-        familyBackgroundDto.setUserId(entity.getUserId());
+       // familyBackgroundDto.setUserId(entity.getUser().getId());
         return familyBackgroundDto;
 
     }
@@ -45,7 +45,7 @@ public class FamilyBackgroundMapper {
         entity.setMamaSurname(dto.getMamaSurname());
         entity.setMamaPlace(dto.getMamaPlace());
         entity.setRelativeSurnames(dto.getRelativeSurnames());
-        entity.setUserId(dto.getUserId());
+      //  entity.setUserId(dto.getUserId());
 
         return entity;
 

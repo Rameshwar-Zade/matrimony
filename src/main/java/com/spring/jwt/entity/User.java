@@ -107,5 +107,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private EducationAndProfession educationAndProfession;
 
+    @OneToOne(mappedBy = "user")
+    private FamilyBackground familyBackground;
+
 
 }
