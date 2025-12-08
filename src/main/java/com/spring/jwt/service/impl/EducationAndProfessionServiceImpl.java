@@ -41,6 +41,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         user.setEducationAndProfession(entity);
 
         EducationAndProfession savedEntity = repository.save(entity);
+
         return EducationAndProfessionMapper.toDto(savedEntity);
 
     }
@@ -95,5 +96,6 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         repository.deleteById(id);
 
     }
+
 }
 
