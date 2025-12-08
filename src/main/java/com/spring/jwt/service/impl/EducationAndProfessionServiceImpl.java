@@ -41,6 +41,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         user.setEducationAndProfession(entity);
 
         EducationAndProfession savedEntity = repository.save(entity);
+
         return EducationAndProfessionMapper.toDto(savedEntity);
 
     }
@@ -54,7 +55,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
                         "Education & Profession not found with id: " + id));
         try {
             educationAndProfession.setEducation(dto.getEducation());
-            educationAndProfession.setDegree(dto.getDegree());
+            educationAndProfession.setEducationDetails(dto.getEducationDetails());
             educationAndProfession.setOccupation(dto.getOccupation());
             educationAndProfession.setOccupationDetails(dto.getOccupationDetails());
             educationAndProfession.setIncomePerYear(dto.getIncomePerYear());
@@ -95,5 +96,6 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         repository.deleteById(id);
 
     }
+
 }
 

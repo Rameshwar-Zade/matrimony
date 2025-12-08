@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,19 +24,27 @@ public class EducationAndProfession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer educationAndProfessionalDetailsId;
 
-    @Column(length = 45, nullable = false)
+    // Dropdown: High School, Diploma, Graduation, Post Graduation
+    @NotNull(message = "Education cannot be null")
+    @Column(nullable = false)
     private String education;
 
-    @Column(length = 45, nullable = false)
-    private String degree;
+    // Renamed field
+    @NotNull
+    @Column(name = "education_details", length = 45, nullable = false)
+    private String educationDetails;
 
+    @NotNull(message = "Occupation cannot be null")
     @Column(length = 45, nullable = false)
     private String occupation;
 
+    @NotBlank(message = "Occupation details cannot be blank")
     @Column(length = 45, nullable = false)
     private String occupationDetails;
 
-    @Column(length = 45, nullable = false)
+    @NotNull(message = "Income Per Year cannot be null")
+    @Positive(message = "Income Per Year must be positive")
+    @Column(nullable = false)
     private Integer incomePerYear;
 
     @Column(length = 45)

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,7 @@ import lombok.Setter;
 @Table(name = "family_background")
 @Getter
 @Setter
+@Data
 public class FamilyBackground {
 
     @Id
@@ -55,10 +58,16 @@ public class FamilyBackground {
     @Column(length = 45)
     private String relativeSurnames;
 
-    @Column
-    private Integer userId;
+  //  @Column
+ //   private Integer userId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     @OneToOne(mappedBy = "familyBackground")
     private Status status;
+
+
 
 }
