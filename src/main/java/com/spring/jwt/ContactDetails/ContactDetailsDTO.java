@@ -1,4 +1,4 @@
-package com.spring.jwt.dto;
+package com.spring.jwt.ContactDetails;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

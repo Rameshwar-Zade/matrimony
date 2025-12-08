@@ -7,7 +7,7 @@ import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ContactDetailsRepository;
 import com.spring.jwt.ContactDetails.ContactDetailsService;
-import com.spring.jwt.dto.ContactDetailsDTO;
+import com.spring.jwt.ContactDetails.ContactDetailsDTO;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
