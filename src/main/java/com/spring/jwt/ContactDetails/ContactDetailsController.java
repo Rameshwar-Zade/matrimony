@@ -16,15 +16,27 @@ public class ContactDetailsController {
     private ContactDetailsService service;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createContactDetails(@Valid @RequestBody ContactDetailsDTO dto) {
+    public ResponseEntity<String> create(@Valid @RequestBody ContactDetailsDTO dto) {
         service.createContactDetails(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Contact Details Saved");
     }
 
     @GetMapping("/get")
-    public ResponseEntity<ContactDetails> getContactDetails(){
+    public ResponseEntity<ContactDetails> get(){
         ContactDetails details=service.getContactDetils();
         return ResponseEntity.status(HttpStatus.OK).body(details);
+    }
+
+    @PatchMapping("/update/{userId}")
+    public ResponseEntity<ContactDetails> update(@PathVariable Integer userId, @RequestBody ContactDetailsDTO dto){
+        ContactDetails updated=service.updateContact(userId, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> delete(@PathVariable Integer userId){
+        service.deleteByUserID(userId);
+       return ResponseEntity.status(HttpStatus.OK).body("deleted Successfully");
     }
 
 }

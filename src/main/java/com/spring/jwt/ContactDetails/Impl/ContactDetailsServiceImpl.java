@@ -67,4 +67,40 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
 
         return contactDetailsRepo.findByUserId(user.getId());
     }
+
+    @Transactional
+    @Override
+    public void deleteByUserID(Integer userID) {
+        ContactDetails contact = contactDetailsRepo.findByUser_Id(userID)
+                .orElseThrow(() -> new UserNotFoundExceptions(
+                        "No contact details found"));
+
+        contactDetailsRepo.deleteByUserId(userID);
+
+    }
+
+    @Override
+    public ContactDetails updateContact(Integer userId, ContactDetailsDTO dto) {
+
+        ContactDetails contact=contactDetailsRepo.findByUser_Id(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("No contact details found"));
+
+        if (dto.getFullAddress() != null) {
+            contact.setFullAddress(dto.getFullAddress());
+        }
+        if (dto.getCity() != null) {
+            contact.setCity(dto.getCity());
+        }
+        if (dto.getPinCode() != null) {
+            contact.setPinCode(dto.getPinCode());
+        }
+        if (dto.getMobileNumber() != null) {
+            contact.setMobileNumber(dto.getMobileNumber());
+        }
+        if (dto.getAlternateNumber() != null) {
+            contact.setAlternateNumber(dto.getAlternateNumber());
+        }
+
+        return contactDetailsRepo.save(contact);
+    }
 }

@@ -11,4 +11,5 @@ public interface UserProfileService {
 
     UserProfile getProfile();
 
+    UserProfile updateUserProfile(Integer userId, UserProfileDto dto);
 }

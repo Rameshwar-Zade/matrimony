@@ -4,7 +4,7 @@ import com.spring.jwt.entity.UserProfile;
 
 public class UserProfileMapper {
 
-    public static UserProfileDto toDto(UserProfile userProfile) {
+    public static UserProfileDto toDTO(UserProfile userProfile) {
 
         if (userProfile == null)
             return null;

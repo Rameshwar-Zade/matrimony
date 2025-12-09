@@ -22,7 +22,7 @@ import java.security.Security;
 @OpenAPIDefinition(
 		info = @Info(
 				title = " REST API Documentation",
-				description = " REST API Documentation" ,
+				description = " REST API Documentation",
 				version = "v1",
 				contact = @Contact(
 						name = "A",

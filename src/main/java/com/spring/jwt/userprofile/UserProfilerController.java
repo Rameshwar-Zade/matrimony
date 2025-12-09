@@ -20,11 +20,11 @@ public class UserProfilerController {
         return ResponseEntity.status(HttpStatus.CREATED).body("User Profile is created for User ID:"+created.getUser().getId());
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<UserProfile> update(@PathVariable Integer id, @RequestBody UserProfileDto dto) {
-//        UserProfile updated = service.updateUserProfile(id, dto);
-//        return ResponseEntity.ok(updated);
-//    }
+    @PatchMapping("/update/{userId}")
+    public ResponseEntity<String> update(@PathVariable Integer userId, @RequestBody UserProfileDto dto) {
+        UserProfile updated = service.updateUserProfile(userId, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("User Profile is updated");
+    }
 
     @GetMapping("/get")
     public ResponseEntity<UserProfile> get(){
