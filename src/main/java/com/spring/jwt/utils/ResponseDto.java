@@ -9,6 +9,8 @@ import lombok.ToString;
 public class ResponseDto {
     public String status;
     public String message;
+    private String data;
+
 
     public ResponseDto(String status, String message) {
         this.status=status;
@@ -17,4 +19,10 @@ public class ResponseDto {
     public ResponseDto() {
 
     }
+    public ResponseDto(String status, String message, String data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+    }
+
 }

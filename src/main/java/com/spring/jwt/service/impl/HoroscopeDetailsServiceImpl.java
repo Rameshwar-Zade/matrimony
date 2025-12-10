@@ -2,13 +2,12 @@ package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.HoroscopeDetailsRequestDTO;
 import com.spring.jwt.dto.HoroscopeDetailsResponseDTO;
-import com.spring.jwt.entity.ExpectationCompleteProfile;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.HoroscopeDetails;
 import com.spring.jwt.mapper.HoroscopeDetailsMapper;
-import com.spring.jwt.repository.ExpectationCompleteProfileRepository;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.HoroscopeDetailsRepository;
 import com.spring.jwt.service.HoroscopeDetailsService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
 
     private final HoroscopeDetailsRepository repository;
-    private final ExpectationCompleteProfileRepository expectationCompleteProfileRepository;
+    private final CompleteProfileRepository completeProfileRepository;
 
     @Override
     public HoroscopeDetailsResponseDTO createHoroscope(HoroscopeDetailsRequestDTO dto) {
@@ -32,15 +31,14 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
         Long userId = dto.getUserId().longValue();
         Long horoscopeId = saved.getHoroscopeDetailsId().longValue();
 
-        // Update expectations_complete_profile table
-        ExpectationCompleteProfile cp =
-                expectationCompleteProfileRepository.findByUserId(userId)
-                        .orElse(new ExpectationCompleteProfile());
+        // Update complete_profile table
+        CompleteProfile cp = completeProfileRepository.findByUserId(userId)
+                .orElse(new CompleteProfile());
 
         cp.setUserId(userId);
         cp.setHoroscopeId(horoscopeId);
 
-        expectationCompleteProfileRepository.save(cp);
+        completeProfileRepository.save(cp);
 
         return HoroscopeDetailsMapper.toDTO(saved);
     }

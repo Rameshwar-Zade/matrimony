@@ -6,11 +6,12 @@ import lombok.Setter;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "expectations_complete_profile")
+@Table(name = "complete_profile")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ExpectationCompleteProfile {
+public class CompleteProfile {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

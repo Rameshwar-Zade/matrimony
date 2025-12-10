@@ -70,3 +70,5 @@ public class PartnerExpectationController {
         return ResponseEntity.ok("Deleted successfully");
     }
 }
+
+//updated

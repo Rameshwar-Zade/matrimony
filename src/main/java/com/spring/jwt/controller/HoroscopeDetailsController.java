@@ -71,7 +71,7 @@ public class HoroscopeDetailsController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(
+    public String pdelete(
             @RequestHeader("Authorization") String authHeader,
             @PathVariable Integer id) {
 

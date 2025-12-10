@@ -1,10 +1,9 @@
 package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.PartnerExpectationDTO;
-import com.spring.jwt.entity.ExpectationCompleteProfile;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.ExpectationsComplete;
-
-import com.spring.jwt.repository.ExpectationCompleteProfileRepository;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ExpectationsCompleteRepository;
 import com.spring.jwt.service.PartnerExpectationService;
 
@@ -22,8 +21,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     private ExpectationsCompleteRepository expectationsRepo;
 
     @Autowired
-    private ExpectationCompleteProfileRepository expectationCompleteRepo;
-
+    private CompleteProfileRepository completeProfileRepo;
 
     @Override
     public Long saveExpectations(Long userId, PartnerExpectationDTO dto) {
@@ -51,14 +49,15 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
 
         ExpectationsComplete saved = expectationsRepo.save(entity);
 
-        ExpectationCompleteProfile link =
-                expectationCompleteRepo.findByUserId(userId)
-                        .orElse(new ExpectationCompleteProfile());
+        // Use CompleteProfile instead of ExpectationCompleteProfile
+        CompleteProfile link =
+                completeProfileRepo.findByUserId(userId)
+                        .orElse(new CompleteProfile());
 
         link.setUserId(userId);
         link.setPartnerExpectationId(saved.getId());
 
-        expectationCompleteRepo.save(link);
+        completeProfileRepo.save(link);
 
         return saved.getId();
     }
@@ -134,10 +133,10 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
             throw new RuntimeException("No expectation found for this user");
         }
 
-        expectationCompleteRepo.findByUserId(userId)
+        completeProfileRepo.findByUserId(userId)
                 .ifPresent(link -> {
                     link.setPartnerExpectationId(null);
-                    expectationCompleteRepo.save(link);
+                    completeProfileRepo.save(link);
                 });
 
         expectationsRepo.delete(existing);
