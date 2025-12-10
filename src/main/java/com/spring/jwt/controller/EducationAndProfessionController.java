@@ -25,7 +25,6 @@ public class EducationAndProfessionController {
 
     }
 
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<EducationAndProfessionDto> getEducationAndProfessionalDetails(@PathVariable Integer id) {
         EducationAndProfessionDto dto = service.getById(id);

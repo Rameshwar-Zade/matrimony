@@ -1,4 +1,6 @@
 package com.spring.jwt.repository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import com.spring.jwt.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

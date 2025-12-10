@@ -1,6 +1,7 @@
 package com.spring.jwt.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,11 +35,11 @@ public class UserProfile {
     @Column(nullable = false)
     private String district;
 
-    @Column(nullable = false)
+    @Column(length = 6, nullable = false)
     private Integer pinCode;
 
     @Column(nullable = false)
-    private String mobileNumber;
+    private Long mobileNumber;
 
     @Column(nullable = false)
     private String mail;
@@ -54,6 +55,9 @@ public class UserProfile {
 
     @Column(nullable = false)
     private String caste;
+
+    @Column(nullable = false)
+    private String subCaste;
 
     @Column(nullable = false)
     private String maritalStatus;
@@ -99,3 +103,7 @@ public class UserProfile {
     private User user;
 
 }
+
+//PinCode 6 digit
+// Mobile no 10 digits must be starts with 6-9
+//Height must be in decimal format

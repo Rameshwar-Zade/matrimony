@@ -29,8 +29,6 @@ public class User {
     @Column(nullable = false, unique = true, length = 250)
     private String email;
 
-
-
     @Column(name = "mobile_no", nullable = false)
     private String mobileNumber;;
 
@@ -42,7 +40,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "profile", nullable = false)
     private ProfileType profile;
-
 
     public enum ProfileType {
 
@@ -69,10 +66,6 @@ public class User {
         }
 
     }
-
-
-
-
 
     @Pattern(regexp = "Male|Female", message = "Gender must be Male or Female")
     @Column(nullable = false)
@@ -110,6 +103,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private EducationAndProfession educationAndProfession;
+
+    @OneToOne(mappedBy = "user")
+    private FamilyBackground familyBackground;
 
 
 }

@@ -1,9 +1,9 @@
 package com.spring.jwt.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "complete_profile")
@@ -11,7 +11,6 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 public class CompleteProfile {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
