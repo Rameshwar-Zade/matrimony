@@ -11,7 +11,7 @@ public interface JwtService {
 
     Claims extractClaims(String token);
 
-    Long extractUserId(String token);
+    Integer extractUserId(String token);
 
     Key getKey();
 

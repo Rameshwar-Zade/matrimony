@@ -19,7 +19,7 @@ public class PartnerExpectationController {
     @Autowired
     private JwtService jwtService;
 
-    private Long getUserId(String auth) {
+    private Integer getUserId(String auth) {
         String token = auth.substring(7);
         return jwtService.extractUserId(token);
     }
@@ -28,15 +28,15 @@ public class PartnerExpectationController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestHeader("Authorization") String auth,
                                   @Valid @RequestBody PartnerExpectationDTO dto) {
-        Long userId = getUserId(auth);
-        Long id = partnerService.saveExpectations(userId, dto);
+        Integer userId = getUserId(auth);
+        Integer id = partnerService.saveExpectations(userId, dto);
         return ResponseEntity.ok("Saved with ID: " + id);
     }
 
 
     @GetMapping("/get")
     public ResponseEntity<?> get(@RequestHeader("Authorization") String auth) {
-        Long userId = getUserId(auth);
+        Integer userId = getUserId(auth);
         return ResponseEntity.ok(partnerService.getExpectations(userId));
     }
 
@@ -44,7 +44,7 @@ public class PartnerExpectationController {
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestHeader("Authorization") String auth,
                                     @Valid @RequestBody PartnerExpectationDTO dto) {
-        Long userId = getUserId(auth);
+        Integer userId = getUserId(auth);
         return ResponseEntity.ok(partnerService.updateExpectations(userId, dto));
     }
 
@@ -58,17 +58,17 @@ public class PartnerExpectationController {
     @PatchMapping("/patch")
     public ResponseEntity<?> patch(@RequestHeader("Authorization") String auth,
                                    @RequestBody PartnerExpectationDTO dto) {
-        Long userId = getUserId(auth);
+        Integer userId = getUserId(auth);
         return ResponseEntity.ok(partnerService.patchExpectations(userId, dto));
     }
 
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestHeader("Authorization") String auth) {
-        Long userId = getUserId(auth);
+        Integer userId = getUserId(auth);
         partnerService.deleteExpectations(userId);
         return ResponseEntity.ok("Deleted successfully");
     }
 }
 
-//updated
+

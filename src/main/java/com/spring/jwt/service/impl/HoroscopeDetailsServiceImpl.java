@@ -28,8 +28,8 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
         HoroscopeDetails entity = HoroscopeDetailsMapper.toEntity(dto);
         HoroscopeDetails saved = repository.save(entity);
 
-        Long userId = dto.getUserId().longValue();
-        Long horoscopeId = saved.getHoroscopeDetailsId().longValue();
+        Integer userId = dto.getUserId();
+        Integer horoscopeId = saved.getHoroscopeDetailsId();
 
         // Update complete_profile table
         CompleteProfile cp = completeProfileRepository.findByUserId(userId)

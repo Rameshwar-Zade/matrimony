@@ -5,7 +5,7 @@ import com.spring.jwt.entity.ExpectationsComplete;
 
 public class ExpectationsMapper {
 
-    public static ExpectationsComplete toEntity(PartnerExpectationDTO dto, Long userId) {
+    public static ExpectationsComplete toEntity(PartnerExpectationDTO dto, Integer userId) {
 
         ExpectationsComplete e = new ExpectationsComplete();
 

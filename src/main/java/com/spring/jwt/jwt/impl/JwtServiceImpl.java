@@ -392,12 +392,12 @@ public class JwtServiceImpl implements JwtService {
     }
   // from tolen fetch id
   @Override
-  public Long extractUserId(String token) {
+  public Integer extractUserId(String token) {
       if (token.startsWith("Bearer ")) {
           token = token.substring(7);
       }
       Claims claims = extractClaims(token);
-      return claims.get("userId", Integer.class).longValue(); // convert userId claim to Long
+      return claims.get("userId", Integer.class); // convert userId claim to Long
   }
 
 

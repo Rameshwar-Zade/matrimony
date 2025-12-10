@@ -24,7 +24,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     private CompleteProfileRepository completeProfileRepo;
 
     @Override
-    public Long saveExpectations(Long userId, PartnerExpectationDTO dto) {
+    public Integer saveExpectations(Integer userId, PartnerExpectationDTO dto) {
 
         ExpectationsComplete existing = expectationsRepo.findByUserId(userId);
 
@@ -63,7 +63,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     }
 
     @Override
-    public ExpectationsComplete getExpectations(Long userId) {
+    public ExpectationsComplete getExpectations(Integer userId) {
         return expectationsRepo.findByUserId(userId);
     }
 
@@ -73,7 +73,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     }
 
     @Override
-    public ExpectationsComplete updateExpectations(Long userId, PartnerExpectationDTO dto) {
+    public ExpectationsComplete updateExpectations(Integer userId, PartnerExpectationDTO dto) {
 
         ExpectationsComplete existing = expectationsRepo.findByUserId(userId);
 
@@ -99,7 +99,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     }
 
     @Override
-    public ExpectationsComplete patchExpectations(Long userId, PartnerExpectationDTO dto) {
+    public ExpectationsComplete patchExpectations(Integer userId, PartnerExpectationDTO dto) {
 
         ExpectationsComplete existing = expectationsRepo.findByUserId(userId);
 
@@ -125,7 +125,7 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     }
 
     @Override
-    public void deleteExpectations(Long userId) {
+    public void deleteExpectations(Integer userId) {
 
         ExpectationsComplete existing = expectationsRepo.findByUserId(userId);
 

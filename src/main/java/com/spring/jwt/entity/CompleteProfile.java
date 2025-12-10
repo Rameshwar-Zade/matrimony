@@ -10,14 +10,14 @@ import lombok.Setter;
 public class CompleteProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Integer userId;
 
-    private Long horoscopeId;
+    private Integer horoscopeId;
 
-    private Long partnerExpectationId;
+    private Integer partnerExpectationId;
     @Column(name = "contact_number_id")
     private Integer contactNumberId;
 

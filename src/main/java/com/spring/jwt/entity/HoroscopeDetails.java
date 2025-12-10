@@ -66,4 +66,5 @@ public class HoroscopeDetails {
 
     @OneToOne(mappedBy = "horoscopeDetails")
     private Status status;
+
 }

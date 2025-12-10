@@ -586,7 +586,7 @@ public class UserServiceImpl implements UserService {
     //fetch userid from token
     @Override
     public UserDTO getUserFromToken(String token) {
-        Long userId = jwtService.extractUserId(token); // get userId from JWT
+        Integer userId = jwtService.extractUserId(token); // get userId from JWT
         if (userId == null) {
             throw new UserNotFoundExceptions("Invalid token or userId not present");
         }

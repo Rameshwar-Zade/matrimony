@@ -4,7 +4,6 @@ import com.spring.jwt.dto.HoroscopeDetailsRequestDTO;
 import com.spring.jwt.dto.HoroscopeDetailsResponseDTO;
 import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.service.HoroscopeDetailsService;
-import com.spring.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,7 @@ public class HoroscopeDetailsController {
     private final HoroscopeDetailsService service;
     private final JwtService jwtService;
 
-    private Long extractUserId(String authHeader) {
+    private Integer extractUserId(String authHeader) {
         String token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : authHeader;
         return jwtService.extractUserId(token);
     }
@@ -28,7 +27,7 @@ public class HoroscopeDetailsController {
             @RequestHeader("Authorization") String authHeader,
             @RequestBody HoroscopeDetailsRequestDTO dto) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         dto.setUserId(userId.intValue());
         return service.createHoroscope(dto);
     }
@@ -38,7 +37,7 @@ public class HoroscopeDetailsController {
             @RequestHeader("Authorization") String authHeader,
             @PathVariable Integer id) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         return service.getHoroscope(id);
     }
 
@@ -46,7 +45,7 @@ public class HoroscopeDetailsController {
     public List<HoroscopeDetailsResponseDTO> getAll(
             @RequestHeader("Authorization") String authHeader) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         return service.getAllHoroscopes();
     }
 
@@ -56,7 +55,7 @@ public class HoroscopeDetailsController {
             @PathVariable Integer id,
             @RequestBody HoroscopeDetailsRequestDTO dto) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         return service.updateHoroscope(id, dto);
     }
 
@@ -66,7 +65,7 @@ public class HoroscopeDetailsController {
             @PathVariable Integer id,
             @RequestBody HoroscopeDetailsRequestDTO dto) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         return service.patchHoroscope(id, dto);
     }
 
@@ -75,7 +74,7 @@ public class HoroscopeDetailsController {
             @RequestHeader("Authorization") String authHeader,
             @PathVariable Integer id) {
 
-        Long userId = extractUserId(authHeader);
+        Integer userId = extractUserId(authHeader);
         return service.deleteHoroscope(id);
     }
 }

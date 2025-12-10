@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface PartnerExpectationService {
 
-    Long saveExpectations(Long userId, PartnerExpectationDTO dto);
+    Integer saveExpectations(Integer userId, PartnerExpectationDTO dto);
 
-    ExpectationsComplete getExpectations(Long userId);
+    ExpectationsComplete getExpectations(Integer userId);
 
-    ExpectationsComplete updateExpectations(Long userId, PartnerExpectationDTO dto);
+    ExpectationsComplete updateExpectations(Integer userId, PartnerExpectationDTO dto);
 
     List<ExpectationsComplete> getAllExpectations();
 
-    ExpectationsComplete patchExpectations(Long userId, PartnerExpectationDTO dto);
+    ExpectationsComplete patchExpectations(Integer userId, PartnerExpectationDTO dto);
 
-    void deleteExpectations(Long userId);
+    void deleteExpectations(Integer userId);
 }

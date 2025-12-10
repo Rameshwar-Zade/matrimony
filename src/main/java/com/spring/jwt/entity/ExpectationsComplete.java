@@ -15,10 +15,10 @@ public class ExpectationsComplete {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "userid_expectation", unique = true, nullable = false)
-    private Long userId;
+    private Integer userId;
 
 
     private Integer ageFrom;
@@ -37,4 +37,5 @@ public class ExpectationsComplete {
     private String eatingHabits;
     private String religion;
     private String complexion;
+
 }
