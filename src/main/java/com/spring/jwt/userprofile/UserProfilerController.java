@@ -14,10 +14,10 @@ public class UserProfilerController {
     @Autowired
     private UserProfileService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<String> create(@Valid @RequestBody UserProfileDto dto) {
-        UserProfile created = service.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User Profile is created for User ID:"+created.getUser().getId());
+        service.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User Profile is created Successfully.....");
     }
 
     @PatchMapping("/update/{userId}")

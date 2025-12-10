@@ -5,7 +5,7 @@ import com.spring.jwt.entity.UserProfile;
 
 public interface UserProfileService {
 
-    UserProfile create(UserProfileDto dto);
+    void create(UserProfileDto dto);
 
     //UserProfile updateUserProfile(Integer id, UserProfileDto dto);
 

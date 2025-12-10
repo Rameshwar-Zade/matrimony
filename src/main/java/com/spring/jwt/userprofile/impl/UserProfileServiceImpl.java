@@ -1,10 +1,12 @@
 package com.spring.jwt.userprofile.impl;
 
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.UserProfileNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.UserProfileRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.userprofile.UserProfileDto;
@@ -26,8 +28,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+    @Autowired
+    private CompleteProfileRepository completeProfileRepository;
+
     @Override
-    public UserProfile create(UserProfileDto dto) {
+    public void create(UserProfileDto dto) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findByEmail(email);
@@ -41,7 +46,13 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
         UserProfile userProfile = UserProfileMapper.toEntity(dto);
         userProfile.setUser(user);
-        return userProfileRepository.save(userProfile);
+        userProfileRepository.save(userProfile);
+
+        CompleteProfile cp=new CompleteProfile();
+        cp.setUserProfileId(userProfileRepository.findByUserId(user.getId()).getUserProfileId());
+        cp.setUserId(user.getId());
+        completeProfileRepository.save(cp);
+
     }
 
 

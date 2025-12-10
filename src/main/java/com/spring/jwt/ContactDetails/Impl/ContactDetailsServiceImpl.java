@@ -73,7 +73,7 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
     public void deleteByUserID(Integer userID) {
         ContactDetails contact = contactDetailsRepo.findByUser_Id(userID)
                 .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found"));
+                        "contact details not found"));
 
         contactDetailsRepo.deleteByUserId(userID);
 
@@ -83,7 +83,7 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
     public ContactDetails updateContact(Integer userId, ContactDetailsDTO dto) {
 
         ContactDetails contact=contactDetailsRepo.findByUser_Id(userId)
-                .orElseThrow(() -> new UserNotFoundExceptions("No contact details found"));
+                .orElseThrow(() -> new UserNotFoundExceptions("contact details not found"));
 
         if (dto.getFullAddress() != null) {
             contact.setFullAddress(dto.getFullAddress());
