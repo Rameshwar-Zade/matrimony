@@ -1,10 +1,12 @@
 package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.EducationAndProfessionDto;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.mapper.EducationAndProfessionMapper;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.EducationAndProfessionRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.EducationAndProfessionService;
@@ -20,6 +22,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
 
     @Autowired
     private final EducationAndProfessionRepository repository;
+    private final CompleteProfileRepository completeProfileRepository;
     private final EducationAndProfessionMapper mapper;
     @Autowired
     private final UserRepository userRepository;
@@ -42,6 +45,19 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
 
         EducationAndProfession savedEntity = repository.save(entity);
 
+        Integer educationId = savedEntity.getEducationAndProfessionalDetailsId();
+
+        Integer userId = user.getId();
+
+        CompleteProfile cp = completeProfileRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    CompleteProfile newCP = new CompleteProfile();
+                    newCP.setUserId(userId);
+                    return newCP;
+                });
+
+        cp.setEducationId(educationId);
+        completeProfileRepository.save(cp);
         return EducationAndProfessionMapper.toDto(savedEntity);
 
     }

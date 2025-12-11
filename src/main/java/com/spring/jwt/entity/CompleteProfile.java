@@ -23,4 +23,11 @@ public class CompleteProfile {
 
     @Column(name = "user_profile_id")
     private Integer userProfileId;
+
+    @Column(name = "education_id")
+    private Integer educationId;
+
+    @Column(name = "family_background_id")
+    private Integer familyBackgroundId;
+
 }
