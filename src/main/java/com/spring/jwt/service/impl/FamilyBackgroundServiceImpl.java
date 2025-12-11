@@ -1,17 +1,17 @@
 package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.FamilyBackgroundDto;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.ResourceNotFoundException;
-import com.spring.jwt.mapper.EducationAndProfessionMapper;
 import com.spring.jwt.mapper.FamilyBackgroundMapper;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.FamilyBackgroundRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.FamilyBackgroundService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +22,13 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
 
         private final UserRepository userRepository;
         private final FamilyBackgroundRepository familyBackgroundRepository;
+        private final CompleteProfileRepository completeProfileRepository;
 
     public FamilyBackgroundServiceImpl(UserRepository userRepository,
-            FamilyBackgroundRepository familyBackgroundRepository) {
+                                       FamilyBackgroundRepository familyBackgroundRepository, CompleteProfileRepository completeProfileRepository) {
         this.userRepository = userRepository;
         this.familyBackgroundRepository = familyBackgroundRepository;
+        this.completeProfileRepository = completeProfileRepository;
     }
 
 
@@ -47,13 +49,28 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         // Set user to entity (OneToOne relation)
         entity.setUser(user);
 
-        // Optional: set relationship from User → FamilyBackground
+
         user.setFamilyBackground(entity);
 
-        // Save entity
+
         FamilyBackground savedEntity = familyBackgroundRepository.save(entity);
 
-        // Return DTO
+        // ----------- NEW CODE: Update COMPLETE PROFILE ----------------
+
+        Integer userId = user.getId();
+        Integer familyBackgroundId = savedEntity.getFamilyBackgroundId();
+
+        CompleteProfile cp = completeProfileRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    CompleteProfile newCP = new CompleteProfile();
+                    newCP.setUserId(userId);
+                    return newCP;
+                });
+
+        cp.setFamilyBackgroundId(familyBackgroundId);
+
+        completeProfileRepository.save(cp);
+
         return FamilyBackgroundMapper.toDto(savedEntity);
     }
 
@@ -105,3 +122,5 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
     }
 
 }
+
+

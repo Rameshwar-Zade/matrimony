@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
 
+
     private final HoroscopeDetailsRepository repository;
     private final CompleteProfileRepository completeProfileRepository;
 

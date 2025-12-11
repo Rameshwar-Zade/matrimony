@@ -9,10 +9,11 @@ import java.util.Set;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
+@Data
 @Entity
 @Table(name = "educationAndProfessionalDetails")
 @Getter
@@ -62,5 +63,4 @@ public class EducationAndProfession {
 
     @OneToOne(mappedBy = "educationAndProfessionalDetails")
     private Status status;
-
 }

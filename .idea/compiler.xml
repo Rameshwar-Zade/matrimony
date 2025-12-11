@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="JWT-with-Spring-Security" />
+        <module name="matrimony" />
       </profile>
     </annotationProcessing>
   </component>
