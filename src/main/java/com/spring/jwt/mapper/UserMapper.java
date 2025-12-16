@@ -104,23 +104,3 @@ public class UserMapper {
         }
     }
 }
-
-//public static PartnerExpectationDTO toDTO(ExpectationsComplete pe) {
-//    PartnerExpectationDTO dto= new PartnerExpectationDTO();
-//
-//    dto.setAgeFrom(pe.getAgeFrom());
-//    dto.setAgeTo(pe.getAgeTo());
-//    dto.setHeightFeet(pe.getHeightFeet());
-//    dto.setHeightInches(pe.getHeightInches());
-//    dto.setLookingFor(pe.getLookingFor());
-//    dto.setCaste(pe.getCaste());
-//    dto.setEducation(pe.getEducation());
-//    dto.setResidentStatus(pe.getResidentStatus());
-//    dto.setPreference(pe.getPreference());
-//    dto.setCountry(pe.getCountry());
-//    dto.setEatingHabits(pe.getEatingHabits());
-//    dto.setReligion(pe.getReligion());
-//    dto.setComplexion(pe.getComplexion());
-//
-//    return dto;
-//}
