@@ -1,10 +1,8 @@
 package com.spring.jwt.mapper;
 
 import com.spring.jwt.dto.UserDTO;
-import com.spring.jwt.dto.UserProfileDTO;
 import com.spring.jwt.entity.Role;
 import com.spring.jwt.entity.User;
-import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.utils.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,4 +103,24 @@ public class UserMapper {
             return value;
         }
     }
-} 
+}
+
+//public static PartnerExpectationDTO toDTO(ExpectationsComplete pe) {
+//    PartnerExpectationDTO dto= new PartnerExpectationDTO();
+//
+//    dto.setAgeFrom(pe.getAgeFrom());
+//    dto.setAgeTo(pe.getAgeTo());
+//    dto.setHeightFeet(pe.getHeightFeet());
+//    dto.setHeightInches(pe.getHeightInches());
+//    dto.setLookingFor(pe.getLookingFor());
+//    dto.setCaste(pe.getCaste());
+//    dto.setEducation(pe.getEducation());
+//    dto.setResidentStatus(pe.getResidentStatus());
+//    dto.setPreference(pe.getPreference());
+//    dto.setCountry(pe.getCountry());
+//    dto.setEatingHabits(pe.getEatingHabits());
+//    dto.setReligion(pe.getReligion());
+//    dto.setComplexion(pe.getComplexion());
+//
+//    return dto;
+//}
