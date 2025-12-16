@@ -1,10 +1,8 @@
 package com.spring.jwt.mapper;
 
 import com.spring.jwt.dto.UserDTO;
-import com.spring.jwt.dto.UserProfileDTO;
 import com.spring.jwt.entity.Role;
 import com.spring.jwt.entity.User;
-import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.utils.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -105,4 +103,4 @@ public class UserMapper {
             return value;
         }
     }
-} 
+}

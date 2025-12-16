@@ -29,7 +29,7 @@ public class PartnerExpectationController {
     public ResponseEntity<?> save(@RequestHeader("Authorization") String auth,
                                   @Valid @RequestBody PartnerExpectationDTO dto) {
         Integer userId = getUserId(auth);
-        Integer id = partnerService.saveExpectations(userId, dto);
+        Integer id = partnerService.saveExpectations(dto);
         return ResponseEntity.ok("Saved with ID: " + id);
     }
 

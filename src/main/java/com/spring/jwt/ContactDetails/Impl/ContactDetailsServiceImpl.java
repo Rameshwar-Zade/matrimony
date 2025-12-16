@@ -53,10 +53,19 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
             contact.setUser(user);
             contactDetailsRepo.save(contact);
 
-            CompleteProfile cp=new CompleteProfile();
-            cp.setContactNumberId(contactDetailsRepo.findByUserId(user.getId()).getContactNumberId());
-            cp.setUserId(user.getId());
-            completeProfileRepository.save(cp);
+        CompleteProfile cp = completeProfileRepository.findByUserId(user.getId())
+                .orElseGet(() -> {
+                    // Create new if not exists
+                    CompleteProfile newCP = new CompleteProfile();
+                    newCP.setUserId(user.getId());
+                    newCP.setContactNumberId(
+                            contactDetailsRepo.findByUserId(user.getId()).getContactNumberId()
+                    );
+                    return completeProfileRepository.save(newCP);
+                });
+        cp.setContactNumberId(contactDetailsRepo.findByUserId(user.getId()).getContactNumberId());
+        cp.setUserId(user.getId());
+        completeProfileRepository.save(cp);
 
     }
 

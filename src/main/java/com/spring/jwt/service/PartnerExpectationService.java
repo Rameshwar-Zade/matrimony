@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PartnerExpectationService {
 
-    Integer saveExpectations(Integer userId, PartnerExpectationDTO dto);
+    Integer saveExpectations(PartnerExpectationDTO dto);
 
     ExpectationsComplete getExpectations(Integer userId);
 
