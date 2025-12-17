@@ -17,7 +17,7 @@ public class ExpectationsComplete {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "userid_expectation", unique = true, nullable = false)
+    @Column(name = "user_id", unique = true, nullable = false)
     private Integer userId;
 
 

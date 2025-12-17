@@ -48,7 +48,17 @@ public class UserProfileServiceImpl implements UserProfileService {
         userProfile.setUser(user);
         userProfileRepository.save(userProfile);
 
-        CompleteProfile cp=new CompleteProfile();
+
+        CompleteProfile cp = completeProfileRepository.findByUserId(user.getId())
+                .orElseGet(() -> {
+                    // Create new if not exists
+                    CompleteProfile newCP = new CompleteProfile();
+                    newCP.setUserId(user.getId());
+                    newCP.setUserProfileId(
+                            userProfileRepository.findByUserId(user.getId()).getUserProfileId()
+                    );
+                    return completeProfileRepository.save(newCP);
+                });
         cp.setUserProfileId(userProfileRepository.findByUserId(user.getId()).getUserProfileId());
         cp.setUserId(user.getId());
         completeProfileRepository.save(cp);
