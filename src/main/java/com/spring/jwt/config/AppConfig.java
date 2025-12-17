@@ -144,6 +144,7 @@ public class AppConfig {
                 .requestMatchers("/api/user-profiles/**").permitAll()
                 .requestMatchers("/api/v1/exam/**").permitAll()
                 .requestMatchers("/api/horoscope/**").authenticated()
+                .requestMatchers("/api/documents/**").authenticated()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers(jwtConfig.getUrl()).permitAll()
@@ -236,3 +237,4 @@ public class AppConfig {
 
 
 }
+

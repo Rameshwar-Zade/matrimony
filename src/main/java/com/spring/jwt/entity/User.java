@@ -107,5 +107,6 @@ public class User {
     @OneToOne(mappedBy = "user")
     private FamilyBackground familyBackground;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserDocuments documents;
 }
