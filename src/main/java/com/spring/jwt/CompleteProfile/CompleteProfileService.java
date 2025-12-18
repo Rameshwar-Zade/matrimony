@@ -1,6 +1,7 @@
 package com.spring.jwt.CompleteProfile;
 
 
+import java.util.List;
 
 public interface CompleteProfileService {
 
@@ -8,4 +9,5 @@ public interface CompleteProfileService {
 
     PublicProfileDTO getPublicProfile(Integer userId);
 
+    List<FullProfileDTO> getAllByGender(String gender);
 }

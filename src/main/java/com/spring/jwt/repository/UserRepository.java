@@ -1,5 +1,4 @@
 package com.spring.jwt.repository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.spring.jwt.entity.User;
@@ -8,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Map<String, Object> findRawUserById(@Param("id") Long id);
 
     Optional<User> findById(Integer userId);
+
+    List<User> findByGender(String gender);
 }
