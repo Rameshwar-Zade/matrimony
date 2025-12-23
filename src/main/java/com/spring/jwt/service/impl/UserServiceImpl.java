@@ -115,8 +115,7 @@ public class UserServiceImpl implements UserService {
         user.setMobileNumber(userDTO.getMobileNumber());
         user.setGender(userDTO.getGender());
         user.setEmailVerified(true);
-        User.ProfileType profileType = User.ProfileType.fromDisplay(userDTO.getProfile());
-        user.setProfile(profileType);
+        user.setProfileType(userDTO.getProfileType());
         user.setLastLogin(LocalDateTime.now());
         Set<Role> roles = new HashSet<>();
 

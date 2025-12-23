@@ -1,6 +1,7 @@
 package com.spring.jwt.repository;
 
 import com.spring.jwt.entity.UserProfile;
+import com.spring.jwt.enums.Gender;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,6 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
 
     Optional<UserProfile> findByUser_Id(Integer userId);
 
-    List<UserProfile> findByGender(String gender);
+    List<UserProfile> findByGender(Gender gender);
 //    List<UserProfile> findByStudentClass(String studentClass);
 }

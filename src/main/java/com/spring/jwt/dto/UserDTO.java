@@ -2,9 +2,12 @@ package com.spring.jwt.dto;
 
 import com.spring.jwt.entity.Role;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.enums.Gender;
+import com.spring.jwt.enums.ProfileType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,11 +39,8 @@ public class UserDTO {
     )
     private String mobileNumber;
 
-    @Pattern(
-            regexp = "Male|Female",
-            message = "Gender must be Male or Female"
-    )
-    private String gender;
+    @NotNull(message = "Gender cannot be blank")
+    private Gender gender;
 
     @Pattern(
             regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$",
@@ -49,11 +49,9 @@ public class UserDTO {
     private String password;
 
 
-    @Pattern(
-            regexp = "SON|DAUGHTER|SISTER|RELATIVE_FRIEND|CLIENT_MARRIAGE_BUREAU",
-            message = "Invalid profile. Valid values: SON, DAUGHTER, SISTER, RELATIVE_FRIEND, CLIENT_MARRIAGE_BUREAU"
-    )
-    private String profile;
+
+    @NotNull(message = "Must be selected")
+    private ProfileType profileType;
 
 
     private Set<String> roles;

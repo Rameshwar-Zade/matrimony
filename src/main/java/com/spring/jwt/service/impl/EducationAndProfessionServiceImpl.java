@@ -41,8 +41,6 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
 
         entity.setUser(user);
 
-        user.setEducationAndProfession(entity);
-
         EducationAndProfession savedEntity = repository.save(entity);
 
         Integer educationId = savedEntity.getEducationAndProfessionalDetailsId();

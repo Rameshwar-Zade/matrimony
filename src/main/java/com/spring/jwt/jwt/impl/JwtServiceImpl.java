@@ -390,7 +390,7 @@ public class JwtServiceImpl implements JwtService {
             return false;
         }
     }
-  // from tolen fetch id
+  // from token fetch id
   @Override
   public Integer extractUserId(String token) {
       if (token.startsWith("Bearer ")) {

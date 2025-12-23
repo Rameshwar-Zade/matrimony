@@ -2,6 +2,7 @@ package com.spring.jwt.CompleteProfile;
 
 
 import com.spring.jwt.entity.User;
+import com.spring.jwt.enums.Gender;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class CompleteProfileController{
 
     // ---------------------- GET ALL PROFILES BY GENDER -----------------------
     @GetMapping("/get/gender/{gender}")
-    public ResponseEntity<List<FullProfileDTO>> getAllByGender(@PathVariable String gender) {
+    public ResponseEntity<List<FullProfileDTO>> getAllByGender(@PathVariable Gender gender) {
 
         List<FullProfileDTO> profiles = completeProfileService.getAllByGender(gender);
 

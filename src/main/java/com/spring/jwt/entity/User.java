@@ -1,5 +1,7 @@
 package com.spring.jwt.entity;
 
+import com.spring.jwt.enums.Gender;
+import com.spring.jwt.enums.ProfileType;
 import com.spring.jwt.utils.StringEncryptConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -39,37 +41,11 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "profile", nullable = false)
-    private ProfileType profile;
+    private ProfileType profileType;
 
-    public enum ProfileType {
-
-        SON("Son"),
-        DAUGHTER("Daughter"),
-        SISTER("Sister"),
-        RELATIVE_FRIEND("Relative/Friend"),
-        CLIENT_MARRIAGE_BUREAU("Client-Marriage Bureau");
-
-        public final String display;
-
-        ProfileType(String display){
-            this.display = display;
-        }
-
-        public static ProfileType fromDisplay(String value){
-            return Arrays.stream(values())
-                    .filter(p ->
-                            p.display.equalsIgnoreCase(value) ||
-                                    p.name().equalsIgnoreCase(value)
-                    )
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid profile name: " + value));
-        }
-
-    }
-
-    @Pattern(regexp = "Male|Female", message = "Gender must be Male or Female")
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String gender;
+    private Gender gender;
 
     @Column(name = "Status")
     private Boolean status;
@@ -98,14 +74,9 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user")
-    private EducationAndProfession educationAndProfession;
-
-    @OneToOne(mappedBy = "user")
-    private FamilyBackground familyBackground;
 
 
 }

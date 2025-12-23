@@ -1,5 +1,6 @@
 package com.spring.jwt.userprofile;
 
+import com.spring.jwt.enums.Gender;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -44,11 +45,10 @@ public class UserProfileDto {
     @NotBlank(message = "status is required")
     private String status;
 
-    @NotBlank(message = "Please Select gender")
-    private String gender;
+    @NotNull(message = "Please select Gender")
+    private Gender gender;
 
     @NotBlank(message = "Please Enter religion")
-    //@Pattern(regexp = "^[A-Za-z\\s'\\-]+$", message = "Please Enter Valid Religion")
     private String religion;
 
     @NotBlank(message = "Please Enter caste")

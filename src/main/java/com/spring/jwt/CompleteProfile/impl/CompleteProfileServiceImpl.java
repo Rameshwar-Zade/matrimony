@@ -5,6 +5,7 @@ import com.spring.jwt.CompleteProfile.CompleteProfileService;
 import com.spring.jwt.CompleteProfile.FullProfileDTO;
 import com.spring.jwt.CompleteProfile.PublicProfileDTO;
 import com.spring.jwt.entity.*;
+import com.spring.jwt.enums.Gender;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.exception.UserProfileNotFoundException;
 import com.spring.jwt.repository.*;
@@ -57,7 +58,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
                 .orElseThrow(() -> new UserProfileNotFoundException(
                         "This User Doesn't Have Profile"));
 
-        // OPTIONAL FIELDS → do NOT throw errors if missing
+        // Public profile should NOT fail if these details are missing
         ContactDetails cd = contactDetailsRepository.findById(cp.getContactNumberId()).orElse(null);
         ExpectationsComplete ec = expectationRepository.findById(cp.getPartnerExpectationId()).orElse(null);
         EducationAndProfession ep = educationAndProfessionRepository.findById(cp.getEducationId()).orElse(null);
@@ -89,7 +90,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
 
 
     @Override
-    public List<FullProfileDTO> getAllByGender(String gender) {
+    public List<FullProfileDTO> getAllByGender(Gender gender) {
 
         List<UserProfile> profiles = userProfileRepository.findByGender(gender);
         List<FullProfileDTO> result = new ArrayList<>();
@@ -115,3 +116,4 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
     }
 
 }
+

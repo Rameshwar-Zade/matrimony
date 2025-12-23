@@ -46,12 +46,7 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         // Convert DTO → Entity
         FamilyBackground entity = FamilyBackgroundMapper.toEntity(dto);
 
-        // Set user to entity (OneToOne relation)
         entity.setUser(user);
-
-
-        user.setFamilyBackground(entity);
-
 
         FamilyBackground savedEntity = familyBackgroundRepository.save(entity);
 
