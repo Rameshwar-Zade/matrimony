@@ -26,4 +26,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Integer userId);
 
     List<User> findByGender(String gender);
+
 }

@@ -1,6 +1,7 @@
 package com.spring.jwt.userprofile;
 
 import com.spring.jwt.entity.UserProfile;
+import com.spring.jwt.utils.BaseResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,21 +16,20 @@ public class UserProfilerController {
     private UserProfileService service;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody UserProfileDto dto) {
-        service.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User Profile is created Successfully.....");
+    public ResponseEntity<BaseResponseDTO> create(@Valid @RequestBody UserProfileDto dto) {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
-    @PatchMapping("/update/{userId}")
-    public ResponseEntity<String> update(@PathVariable Integer userId, @RequestBody UserProfileDto dto) {
-        UserProfile updated = service.updateUserProfile(userId, dto);
-        return ResponseEntity.status(HttpStatus.OK).body("User Profile is updated");
+    @PatchMapping("/update")
+    public ResponseEntity<BaseResponseDTO> update(@RequestBody UserProfileDto dto) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateUserProfile(dto));
     }
+
 
     @GetMapping("/get")
-    public ResponseEntity<UserProfile> get(){
-        UserProfile profile=service.getProfile();
-        return ResponseEntity.ok(profile);
+    public ResponseEntity<UserProfileDto> get() {
+        return ResponseEntity.ok(service.getProfile());
     }
-
 }

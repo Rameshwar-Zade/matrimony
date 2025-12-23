@@ -38,7 +38,8 @@ public interface JwtService {
      * @param token The token to blacklist
      */
     void blacklistToken(String token);
-    
+
+    String extractToken();
     /**
      * Extract the token ID (jti) from a token
      * @param token The token to extract ID from

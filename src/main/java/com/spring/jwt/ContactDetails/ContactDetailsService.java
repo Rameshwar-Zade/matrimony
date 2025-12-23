@@ -7,10 +7,9 @@ public interface ContactDetailsService {
 
     void createContactDetails(ContactDetailsDTO dto);
 
-    ContactDetails getContactDetils();
+    ContactDetailsDTO getContactDetails();
 
-    @Transactional
-    void deleteByUserID(Integer userID);
+    ContactDetailsDTO updateContact(ContactDetailsDTO dto);
 
-    ContactDetails updateContact(Integer userId, ContactDetailsDTO dto);
+    void deleteContactDetails();
 }
