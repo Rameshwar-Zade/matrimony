@@ -10,6 +10,9 @@ public interface EducationAndProfessionService {
     EducationAndProfessionDto getById(Integer id);
 
     void delete(Integer id);
+
+    EducationAndProfessionDto partialUpdate(Integer id, EducationAndProfessionDto dto);
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.spring.jwt.userprofile.impl;
 
+import com.spring.jwt.dto.BrideFilterDto;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserProfile;
@@ -9,6 +10,7 @@ import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.UserProfileRepository;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.specification.UserProfileSpecification;
 import com.spring.jwt.userprofile.UserProfileDto;
 import com.spring.jwt.userprofile.UserProfileMapper;
 import com.spring.jwt.userprofile.UserProfileService;
@@ -16,6 +18,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
+import java.util.List;
 
 
 @Service
@@ -156,6 +160,13 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         return userProfileRepository.save(profile);
+    }
+
+    public List<UserProfile> filterBrides(BrideFilterDto dto){
+        return userProfileRepository.findAll(
+                UserProfileSpecification.filterBy(dto));
+
+
     }
 
 

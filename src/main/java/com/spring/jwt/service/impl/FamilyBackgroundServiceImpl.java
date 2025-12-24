@@ -50,7 +50,9 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         entity.setUser(user);
 
 
-        user.setFamilyBackground(entity);
+//        user.setFamilyBackground(entity);
+
+
 
 
         FamilyBackground savedEntity = familyBackgroundRepository.save(entity);
@@ -121,6 +123,29 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         familyBackgroundRepository.delete(entity);
     }
 
-}
+    @Override
+    public FamilyBackgroundDto getByLoggedInUser() {
+
+
+        // Get logged-in username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch user
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        // Fetch FamilyBackground by user
+        FamilyBackground entity = familyBackgroundRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "FamilyBackground not found for user: " + username));
+
+        return FamilyBackgroundMapper.toDto(entity);
+    }
+
+    }
+
+
 
 

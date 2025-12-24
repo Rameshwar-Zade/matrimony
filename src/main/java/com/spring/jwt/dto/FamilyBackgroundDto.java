@@ -8,6 +8,10 @@ public class FamilyBackgroundDto {
 
     private Integer familyBackgroundId;
 
+    private String fatherName;
+
+    private String motherName;
+
     private String fatherOccupation;
 
     private String motherOccupation;

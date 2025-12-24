@@ -7,7 +7,8 @@ import lombok.Data;
 @Entity
 @Table(name = "user_documents")
 @Data
-public class UserDocuments {
+public class
+UserDocuments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,7 +18,7 @@ public class UserDocuments {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-   // private Integer userId;
+//    private Integer userId;
 
 
 

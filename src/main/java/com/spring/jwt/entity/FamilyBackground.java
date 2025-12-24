@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
 @Table(name = "family_background")
 @Getter
@@ -21,6 +20,15 @@ public class FamilyBackground {
     @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer familyBackgroundId;
+
+    @Column(length = 45)
+    private String fatherName;
+
+
+    @Column(length = 45)
+    private String motherName;
+
+
 
     @Column(length = 45)
     private String fatherOccupation;
@@ -71,3 +79,5 @@ public class FamilyBackground {
 
 
 }
+
+

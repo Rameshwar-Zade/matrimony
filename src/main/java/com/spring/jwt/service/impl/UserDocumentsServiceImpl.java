@@ -1,42 +1,41 @@
 package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.UserDocumentsDto;
+import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserDocuments;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.mapper.UserDocumentsMapper;
+import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.UserDocumentsRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.UserDocumentsService;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.DocumentType;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-
+@Transactional
 @Service
 public class UserDocumentsServiceImpl implements UserDocumentsService {
 
-    private final UserDocumentsRepository repository;
+    private final UserDocumentsRepository userDocumentsRepository;
 
     private final UserRepository userRepository;
 
-    public UserDocumentsServiceImpl(UserDocumentsRepository repository, UserRepository userRepository) {
-        this.repository = repository;
+    private final CompleteProfileRepository completeProfileRepository;
+
+    public UserDocumentsServiceImpl(UserDocumentsRepository userDocumentsRepository,
+                                    UserRepository userRepository,
+                                    CompleteProfileRepository completeProfileRepository) {
+        this.userDocumentsRepository = userDocumentsRepository;
         this.userRepository = userRepository;
+        this.completeProfileRepository = completeProfileRepository;
     }
 
-    private final String UPLOAD_BASE_DIR = "uploads";
 
     // 🔐 Get user from JWT
     private User getLoggedInUser() {
@@ -61,78 +60,69 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
         return user;
     }
 
-    public UserDocumentsDto uploadPan(MultipartFile file) {
-        return uploadDocument(file, "pan");
-    }
-
-    public UserDocumentsDto uploadAadhaar(MultipartFile file) {
-        return uploadDocument(file, "Aadhaar");
-    }
 
     @Override
-    public UserDocumentsDto uploadProfilePhoto(MultipartFile file) {
-        return uploadDocument(file, "profilephoto");
+    public UserDocumentsDto uploadAll(MultipartFile pan, MultipartFile aadhaar,
+                                   MultipartFile profilePhoto, MultipartFile salarySlip,
+                                   MultipartFile biodata,
+                                   MultipartFile leavingCertificate) {
+
+        User loggedInUser = getLoggedInUser();
+
+
+        UserDocuments documents = userDocumentsRepository.findByUser(loggedInUser)
+                .orElse(new UserDocuments());
+        documents.setUser(loggedInUser);
+
+        try{
+
+        if (pan != null && !pan.isEmpty())
+            documents.setPanCard(pan.getBytes());
+
+        if (aadhaar != null && !aadhaar.isEmpty())
+            documents.setAdhaarPhoto(aadhaar.getBytes());
+
+        if (profilePhoto != null && !profilePhoto.isEmpty())
+            documents.setProfilePhoto(profilePhoto.getBytes());
+
+        if (salarySlip != null && !salarySlip.isEmpty())
+            documents.setSalarySlip(salarySlip.getBytes());
+        if (biodata != null && !biodata.isEmpty())
+            documents.setBiodata(biodata.getBytes());
+        if (leavingCertificate != null && !leavingCertificate.isEmpty())
+            documents.setLeavingCertificate(leavingCertificate.getBytes());
+
+    } catch (IOException e) {
+        throw new RuntimeException("Error reading file data", e);
     }
 
-    @Override
-    public UserDocumentsDto uploadSalarySlip(MultipartFile file) {
-        return uploadDocument(file, "salaryslip");
+    UserDocuments saved = userDocumentsRepository.save(documents);
+
+        CompleteProfile cp=
+                completeProfileRepository.findByUserId(loggedInUser.getId())
+                        .orElseGet(() -> {
+                            CompleteProfile newCp = new CompleteProfile();
+                            newCp.setUserId(loggedInUser.getId());
+                            return completeProfileRepository.save(newCp);
+                        });
+
+        cp.setUserDocuments(saved);
+
+        // Save updated CompleteProfile
+        completeProfileRepository.save(cp);
+
+                            return UserDocumentsMapper.toDto(saved);
+
     }
-
-    @Override
-    public UserDocumentsDto uploadBiodata(MultipartFile file) {
-        return uploadDocument(file, "biodata");
-    }
-
-    @Override
-    public UserDocumentsDto uploadLeavingCertificate(MultipartFile file) {
-        return uploadDocument(file, "leavingcertificate");
-    }
-
-    private UserDocumentsDto uploadDocument(MultipartFile file, String documentType) {
-        User user = getLoggedInUser();
-
-        // ONE-TO-ONE: get existing or create
-        UserDocuments documents = repository.findByUser(user)
-                .orElseGet(() -> {
-                    UserDocuments d = new UserDocuments();
-                    d.setUser(user);
-                    return d;
-                });
-
-        try {
-            byte[] data = file.getBytes(); // ✅ convert to byte[]
-
-            switch (documentType.toLowerCase()) {
-                case "pan" -> documents.setPanCard(data);
-                case "aadhaar" -> documents.setAdhaarPhoto(data);
-                case "profilephoto" -> documents.setProfilePhoto(data);
-                case "salaryslip" -> documents.setSalarySlip(data);
-                case "biodata" -> documents.setBiodata(data);
-                case "leavingcertificate" -> documents.setLeavingCertificate(data);
-                default -> throw new IllegalArgumentException("Invalid document type");
-            }
-
-            repository.save(documents);
-            return UserDocumentsMapper.toDto(documents);
-
-        } catch (IOException e) {
-            throw new RuntimeException("File upload failed for " + documentType, e);
-        }
 
     }
 
 
 
-    @Override
-    public UserDocumentsDto getUserDocumentsById(Integer id) {
 
-        UserDocuments documents=repository
-                .findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User Documents not found with Id "+ id));
 
-        return UserDocumentsMapper.toDto(documents);
-    }
-}
+
+
+
+
 

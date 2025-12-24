@@ -26,25 +26,23 @@ public class EducationAndProfession {
     private Integer educationAndProfessionalDetailsId;
 
     // Dropdown: High School, Diploma, Graduation, Post Graduation
-    @NotNull(message = "Education cannot be null")
+
     @Column(nullable = false)
     private String education;
 
     // Renamed field
-    @NotNull
+
     @Column(name = "education_details", length = 45, nullable = false)
     private String educationDetails;
 
-    @NotNull(message = "Occupation cannot be null")
     @Column(length = 45, nullable = false)
     private String occupation;
 
-    @NotBlank(message = "Occupation details cannot be blank")
+
     @Column(length = 45, nullable = false)
     private String occupationDetails;
 
-    @NotNull(message = "Income Per Year cannot be null")
-    @Positive(message = "Income Per Year must be positive")
+
     @Column(nullable = false)
     private Integer incomePerYear;
 
