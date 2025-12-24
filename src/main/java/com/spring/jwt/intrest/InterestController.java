@@ -1,7 +1,7 @@
 package com.spring.jwt.intrest;
 
-import com.spring.jwt.enums.InterestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,43 +14,56 @@ public class InterestController {
     @Autowired
     private InterestService interestService;
 
+    // ================= SEND INTEREST =================
 
     @PostMapping("/send/{receiverId}")
-    public ResponseEntity<String> sendInterest(@PathVariable Integer receiverId) {
+    public ResponseEntity<InterestResponseDTO> sendInterest(@PathVariable Integer receiverId) {
 
-        interestService.sendInterest(receiverId);
-        return ResponseEntity.ok("Interest sent successfully");
+        InterestResponseDTO response = interestService.sendInterest(receiverId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    // ================= ACCEPT INTEREST =================
 
-    @PutMapping("/respond/{interestId}")
-    public ResponseEntity<String> respondInterest(
-            @PathVariable Integer interestId,
-            @RequestParam InterestStatus status) {
+    @PutMapping("/accept/{interestId}")
+    public ResponseEntity<InterestResponseDTO> acceptInterest(@PathVariable Integer interestId) {
 
-        interestService.respondInterest(interestId, status);
-        return ResponseEntity.ok("Interest " + status.name().toLowerCase());
+        InterestResponseDTO response = interestService.acceptInterest(interestId);
+        return ResponseEntity.ok(response);
     }
 
+    // ================= DECLINE INTEREST =================
+
+    @PutMapping("/decline/{interestId}")
+    public ResponseEntity<InterestResponseDTO> declineInterest(@PathVariable Integer interestId) {
+
+        InterestResponseDTO response = interestService.declineInterest(interestId);
+        return ResponseEntity.ok(response);
+    }
+
+    // ================= SENT INTERESTS =================
 
     @GetMapping("/sent")
     public ResponseEntity<List<InterestDTO>> getSentInterests() {
 
-        List<InterestDTO> sentInterests = interestService.getSentInterests();
-        return ResponseEntity.ok(sentInterests);
+        List<InterestDTO> list = interestService.getSentInterests();
+        return ResponseEntity.ok(list);
     }
 
+    // ================= RECEIVED INTERESTS =================
 
     @GetMapping("/received")
     public ResponseEntity<List<InterestDTO>> getReceivedInterests() {
 
-        List<InterestDTO> receivedInterests = interestService.getReceivedInterests();
-        return ResponseEntity.ok(receivedInterests);
+        List<InterestDTO> list = interestService.getReceivedInterests();
+        return ResponseEntity.ok(list);
     }
 
+    // ================= CANCEL INTEREST =================
 
     @DeleteMapping("/cancel/{interestId}")
-    public ResponseEntity<String> cancelInterest(@PathVariable Integer interestId) {
+    public ResponseEntity<String> cancelInterest(
+            @PathVariable Integer interestId) {
 
         interestService.cancelInterest(interestId);
         return ResponseEntity.ok("Interest cancelled successfully");
