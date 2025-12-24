@@ -3,6 +3,7 @@ package com.spring.jwt.repository;
 import com.spring.jwt.entity.UserProfile;
 import com.spring.jwt.enums.Gender;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

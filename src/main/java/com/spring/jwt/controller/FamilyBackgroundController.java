@@ -26,17 +26,23 @@ public class FamilyBackgroundController {
         return ResponseEntity.ok(savedDto);
     }
 
-    @GetMapping("/{id}")
-   public ResponseEntity<FamilyBackgroundDto> getFamilyBackgroundDetails(@PathVariable("id") Integer id) {
-        FamilyBackgroundDto dto = service.getById(id);
-       return ResponseEntity.ok(dto);
-   }
+//    @GetMapping("/{id}")
+//   public ResponseEntity<FamilyBackgroundDto> getFamilyBackgroundDetails(@PathVariable("id") Integer id) {
+//        FamilyBackgroundDto dto = service.getById(id);
+//       return ResponseEntity.ok(dto);
+//   }
 
-   @GetMapping
-   public ResponseEntity<List<FamilyBackgroundDto>>getAllFamilyBackgroundDetails() {
-       List<FamilyBackgroundDto> list = service.getAll();
-       return ResponseEntity.ok(list);
-   }
+    @GetMapping()
+    public ResponseEntity<FamilyBackgroundDto> getByCurrentUser() {
+        FamilyBackgroundDto dto = service.getByLoggedInUser();
+        return ResponseEntity.ok(dto);
+    }
+
+//   @GetMapping
+//   public ResponseEntity<List<FamilyBackgroundDto>>getAllFamilyBackgroundDetails() {
+//       List<FamilyBackgroundDto> list = service.getAll();
+//       return ResponseEntity.ok(list);
+//   }
 
 
     @PutMapping("/{id}")

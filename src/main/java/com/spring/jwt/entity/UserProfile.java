@@ -103,6 +103,9 @@ public class UserProfile {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
+    private String country;
+
 }
 
 //PinCode 6 digit

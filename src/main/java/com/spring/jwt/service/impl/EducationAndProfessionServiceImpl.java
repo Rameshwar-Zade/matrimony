@@ -28,8 +28,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
     private final UserRepository userRepository;
 
 
-    public EducationAndProfessionDto create(EducationAndProfessionDto dto) {
-
+    public EducationAndProfessionDto create( EducationAndProfessionDto dto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepository.findByEmail(username);
@@ -40,6 +39,8 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         EducationAndProfession entity = EducationAndProfessionMapper.toEntity(dto);
 
         entity.setUser(user);
+
+//        user.setEducationAndProfession(entity);
 
         EducationAndProfession savedEntity = repository.save(entity);
 
@@ -110,6 +111,45 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
         repository.deleteById(id);
 
     }
+
+    @Override
+    public EducationAndProfessionDto partialUpdate(
+            Integer id, EducationAndProfessionDto dto) {
+
+        EducationAndProfession entity = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Education & Profession not found with id " + id)
+                );
+
+        if (dto.getEducation() !=null)
+            entity.setEducation(dto.getEducation());
+
+        if (dto.getEducationDetails()!=null)
+            entity.setEducationDetails(dto.getEducationDetails());
+        if (dto.getOccupation() !=null)
+            entity.setEducation(dto.getOccupation());
+        if (dto.getOccupationDetails() !=null)
+            entity.setOccupationDetails(dto.getOccupationDetails());
+        if (dto.getIncomePerYear() !=null)
+            entity.setIncomePerYear(dto.getIncomePerYear());
+        if (dto.getStatus1() !=null)
+            entity.setIncomePerYear(dto.getIncomePerYear());
+        if (dto.getEducationAndProfessionalDetailsCol() !=null)
+            entity.setEducationAndProfessionalDetailsCol(dto.getEducationAndProfessionalDetailsCol());
+        if (dto.getUserId() !=null){
+            User user=userRepository.findById(dto.getUserId())
+                    .orElseThrow(() ->
+                    new ResourceNotFoundException("User not found with id" + dto.getUserId()));
+            entity.setUser(user);
+
+        }
+
+        return mapper.toDto(entity);
+
+
+    }
+
 
 }
 

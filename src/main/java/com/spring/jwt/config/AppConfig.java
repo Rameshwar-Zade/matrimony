@@ -115,8 +115,11 @@ public class AppConfig {
                 "/user/**",
                 "/api/users/**",
 
+
                 jwtConfig.getUrl(),
                 jwtConfig.getRefreshUrl()
+
+
             )
         );
 
@@ -144,8 +147,11 @@ public class AppConfig {
                 .requestMatchers("/api/user-profiles/**").permitAll()
                 .requestMatchers("/api/v1/exam/**").permitAll()
                 .requestMatchers("/api/horoscope/**").authenticated()
+                .requestMatchers("/api/documents/**").authenticated()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers("/api/brides/filter").permitAll()
+
                 .requestMatchers(jwtConfig.getUrl()).permitAll()
                 .requestMatchers(jwtConfig.getRefreshUrl()).permitAll()
 
@@ -176,6 +182,7 @@ public class AppConfig {
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/public/**"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/v1/users/register"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/v1/users/password/**"),
+                    new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/brides/filter"),
 
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/v2/api-docs/**"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/v3/api-docs/**"),
@@ -186,8 +193,10 @@ public class AppConfig {
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/swagger-ui.html"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/user/**"),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/users/**"),
+
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getUrl()),
                 new org.springframework.security.web.util.matcher.AntPathRequestMatcher(jwtConfig.getRefreshUrl())
+
             );
 
         log.debug("Configuring security filters");
@@ -236,3 +245,4 @@ public class AppConfig {
 
 
 }
+
