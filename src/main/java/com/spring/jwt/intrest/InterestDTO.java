@@ -4,11 +4,10 @@ import com.spring.jwt.enums.InterestStatus;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+
 
 @Data
 public class InterestDTO {
-
     private Integer interestId;
     private Integer senderId;
     private Integer receiverId;
