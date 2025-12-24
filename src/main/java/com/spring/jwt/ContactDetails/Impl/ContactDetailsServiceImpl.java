@@ -11,10 +11,16 @@ import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ContactDetailsRepository;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.utils.ApiResponse;
+import com.spring.jwt.utils.BaseResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -34,7 +40,7 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
     private CompleteProfileRepository completeProfileRepository;
 
     @Override
-    public void createContactDetails(ContactDetailsDTO dto) {
+    public BaseResponseDTO createContactDetails(ContactDetailsDTO dto) {
 
         Integer userId = jwtService.extractUserId(jwtService.extractToken());
 
@@ -62,6 +68,12 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
 
         cp.setContactNumberId(contact.getContactNumberId());
         completeProfileRepository.save(cp);
+        BaseResponseDTO response=new BaseResponseDTO();
+        response.setUserID(userId);
+        response.setCode("200");
+        response.setMessage("Contact Details Added successfully");
+
+        return response;
     }
 
     @Override
@@ -91,7 +103,7 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
     }
 
     @Override
-    public void deleteContactDetails() {
+    public BaseResponseDTO deleteContactDetails() {
 
         Integer userId = jwtService.extractUserId(jwtService.extractToken());
 
@@ -99,5 +111,11 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
                 .orElseThrow(() -> new UserNotFoundExceptions("Contact details not found"));
 
         contactDetailsRepo.delete(contact);
+        BaseResponseDTO response=new BaseResponseDTO();
+        response.setUserID(userId);
+        response.setCode("200");
+        response.setMessage("Contact Details Deleted successfully");
+
+        return response;
     }
 }

@@ -1,5 +1,6 @@
 package com.spring.jwt.ContactDetails;
 
+import com.spring.jwt.utils.BaseResponseDTO;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,9 @@ public class ContactDetailsController {
     private ContactDetailsService service;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(
-            @Valid @RequestBody ContactDetailsDTO dto) {
+    public ResponseEntity<BaseResponseDTO> create(@Valid @RequestBody ContactDetailsDTO dto) {
 
-        service.createContactDetails(dto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Contact details saved successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createContactDetails(dto));
     }
 
     @GetMapping("/get")
@@ -29,16 +27,16 @@ public class ContactDetailsController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<String> update(
-            @RequestBody ContactDetailsDTO dto) {
+    public ResponseEntity<String> update(@RequestBody ContactDetailsDTO dto) {
 
         service.updateContact(dto);
         return ResponseEntity.ok("Contact details updated successfully");
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete() {
-        service.deleteContactDetails();
-        return ResponseEntity.ok("Contact details deleted successfully");
+    public ResponseEntity<BaseResponseDTO> delete() {
+
+        return ResponseEntity.ok(service.deleteContactDetails());
     }
+
 }
