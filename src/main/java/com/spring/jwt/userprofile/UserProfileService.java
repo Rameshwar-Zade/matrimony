@@ -1,19 +1,17 @@
 package com.spring.jwt.userprofile;
 
-import com.spring.jwt.dto.BrideFilterDto;
-import com.spring.jwt.entity.UserProfile;
+import com.spring.jwt.utils.BaseResponseDTO;
 
 import java.util.List;
 
 
 public interface UserProfileService {
 
-    void create(UserProfileDto dto);
+    BaseResponseDTO create(UserProfileDto dto);
 
     //UserProfile updateUserProfile(Integer id, UserProfileDto dto);
 
-    UserProfile getProfile();
+    UserProfileDto getProfile();
 
-    UserProfile updateUserProfile(Integer userId, UserProfileDto dto);
-
+    BaseResponseDTO updateUserProfile(UserProfileDto dto);
 }

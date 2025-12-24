@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -390,16 +392,30 @@ public class JwtServiceImpl implements JwtService {
             return false;
         }
     }
-  // from tolen fetch id
+
+  // from token fetch id
   @Override
   public Integer extractUserId(String token) {
-      if (token.startsWith("Bearer ")) {
-          token = token.substring(7);
-      }
       Claims claims = extractClaims(token);
       return claims.get("userId", Integer.class); // convert userId claim to Long
   }
+    // ================= TOKEN UTILITY =================
+    public String extractToken() {
+        ServletRequestAttributes attrs =
+                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
+        if (attrs == null) {
+            throw new RuntimeException("Request context missing");
+        }
+
+        String authHeader = attrs.getRequest().getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Invalid Authorization header");
+        }
+
+        return authHeader.substring(7);
+    }
 
 
 

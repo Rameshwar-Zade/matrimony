@@ -1,7 +1,7 @@
 package com.spring.jwt.ContactDetails;
 
-
-import com.spring.jwt.entity.ContactDetails;
+import com.spring.jwt.utils.BaseResponseDTO;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,27 +16,27 @@ public class ContactDetailsController {
     private ContactDetailsService service;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody ContactDetailsDTO dto) {
-        service.createContactDetails(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Contact Details Saved");
+    public ResponseEntity<BaseResponseDTO> create(@Valid @RequestBody ContactDetailsDTO dto) {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createContactDetails(dto));
     }
 
     @GetMapping("/get")
-    public ResponseEntity<ContactDetails> get(){
-        ContactDetails details=service.getContactDetils();
-        return ResponseEntity.status(HttpStatus.OK).body(details);
+    public ResponseEntity<ContactDetailsDTO> get() {
+        return ResponseEntity.ok(service.getContactDetails());
     }
 
-    @PatchMapping("/update/{userId}")
-    public ResponseEntity<ContactDetails> update(@PathVariable Integer userId, @RequestBody ContactDetailsDTO dto){
-        ContactDetails updated=service.updateContact(userId, dto);
-        return ResponseEntity.status(HttpStatus.OK).body(updated);
+    @PatchMapping("/update")
+    public ResponseEntity<String> update(@RequestBody ContactDetailsDTO dto) {
+
+        service.updateContact(dto);
+        return ResponseEntity.ok("Contact details updated successfully");
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<String> delete(@PathVariable Integer userId){
-        service.deleteByUserID(userId);
-       return ResponseEntity.status(HttpStatus.OK).body("deleted Successfully");
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponseDTO> delete() {
+
+        return ResponseEntity.ok(service.deleteContactDetails());
     }
 
 }

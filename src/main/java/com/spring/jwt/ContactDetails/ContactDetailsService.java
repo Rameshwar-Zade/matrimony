@@ -1,16 +1,16 @@
 package com.spring.jwt.ContactDetails;
 
 import com.spring.jwt.entity.ContactDetails;
+import com.spring.jwt.utils.BaseResponseDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ContactDetailsService {
 
-    void createContactDetails(ContactDetailsDTO dto);
+    BaseResponseDTO createContactDetails(ContactDetailsDTO dto);
 
-    ContactDetails getContactDetils();
+    ContactDetailsDTO getContactDetails();
 
-    @Transactional
-    void deleteByUserID(Integer userID);
+    ContactDetailsDTO updateContact(ContactDetailsDTO dto);
 
-    ContactDetails updateContact(Integer userId, ContactDetailsDTO dto);
+    BaseResponseDTO deleteContactDetails();
 }

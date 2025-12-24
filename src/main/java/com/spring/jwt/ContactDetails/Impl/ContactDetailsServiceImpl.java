@@ -1,25 +1,31 @@
 package com.spring.jwt.ContactDetails.Impl;
 
+import com.spring.jwt.ContactDetails.ContactDetailsDTO;
+import com.spring.jwt.ContactDetails.ContactDetailsMapper;
+import com.spring.jwt.ContactDetails.ContactDetailsService;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
-
 import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ContactDetailsRepository;
-import com.spring.jwt.ContactDetails.ContactDetailsService;
-import com.spring.jwt.ContactDetails.ContactDetailsDTO;
-import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.repository.UserRepository;
+import com.spring.jwt.utils.ApiResponse;
+import com.spring.jwt.utils.BaseResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
-public class  ContactDetailsServiceImpl implements ContactDetailsService {
+public class ContactDetailsServiceImpl implements ContactDetailsService {
 
     @Autowired
     private ContactDetailsRepository contactDetailsRepo;
@@ -28,88 +34,88 @@ public class  ContactDetailsServiceImpl implements ContactDetailsService {
     private UserRepository userRepo;
 
     @Autowired
+    private JwtService jwtService;
+
+    @Autowired
     private CompleteProfileRepository completeProfileRepository;
 
     @Override
-    public void createContactDetails(ContactDetailsDTO dto) {
+    public BaseResponseDTO createContactDetails(ContactDetailsDTO dto) {
 
-            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userRepo.findByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundExceptions("Authenticated user not found", HttpStatus.UNAUTHORIZED);
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
+
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (contactDetailsRepo.existsByUser_Id(userId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Contact details already exist"
+            );
         }
 
-        ContactDetails existing = contactDetailsRepo.findByUserId(user.getId());
-        if (existing != null) {
-           throw new ResponseStatusException(HttpStatus.CONFLICT, "Contact details already exist for this user");
-        }
-            ContactDetails contact=new ContactDetails();
+        ContactDetails contact = ContactDetailsMapper.toEntity(dto);
+        contact.setUser(user);
+        contactDetailsRepo.save(contact);
 
-            contact.setFullAddress(dto.getFullAddress());
-            contact.setCity(dto.getCity());
-            contact.setPinCode(dto.getPinCode());
-            contact.setMobileNumber(dto.getMobileNumber());
-            contact.setAlternateNumber(dto.getAlternateNumber());
-            contact.setUser(user);
-            contactDetailsRepo.save(contact);
-
-        CompleteProfile cp = completeProfileRepository.findByUserId(user.getId())
+        CompleteProfile cp = completeProfileRepository
+                .findByUserId(userId)
                 .orElseGet(() -> {
-                    // Create new if not exists
                     CompleteProfile newCP = new CompleteProfile();
-                    newCP.setUserId(user.getId());
-                    newCP.setContactNumberId(
-                            contactDetailsRepo.findByUserId(user.getId()).getContactNumberId()
-                    );
-                    return completeProfileRepository.save(newCP);
+                    newCP.setUserId(userId);
+                    return newCP;
                 });
-        cp.setContactNumberId(contactDetailsRepo.findByUserId(user.getId()).getContactNumberId());
-        cp.setUserId(user.getId());
+
+        cp.setContactNumberId(contact.getContactNumberId());
         completeProfileRepository.save(cp);
+        BaseResponseDTO response=new BaseResponseDTO();
+        response.setUserID(userId);
+        response.setCode("200");
+        response.setMessage("Contact Details Added successfully");
 
+        return response;
     }
 
     @Override
-    public ContactDetails getContactDetils() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepo.findByEmail(email);
+    public ContactDetailsDTO getContactDetails() {
 
-        return contactDetailsRepo.findByUserId(user.getId());
-    }
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
 
-    @Transactional
-    @Override
-    public void deleteByUserID(Integer userID) {
-        ContactDetails contact = contactDetailsRepo.findByUser_Id(userID)
-                .orElseThrow(() -> new UserNotFoundExceptions(
-                        "No contact details found"));
+        ContactDetails contact = contactDetailsRepo.findByUser_Id(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("Contact details not found"));
 
-        contactDetailsRepo.deleteByUserId(userID);
-
+        return ContactDetailsMapper.toDTO(contact);
     }
 
     @Override
-    public ContactDetails updateContact(Integer userId, ContactDetailsDTO dto) {
+    public ContactDetailsDTO updateContact(ContactDetailsDTO dto) {
 
-        ContactDetails contact=contactDetailsRepo.findByUser_Id(userId)
-                .orElseThrow(() -> new UserNotFoundExceptions("No contact details found"));
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
 
-        if (dto.getFullAddress() != null) {
-            contact.setFullAddress(dto.getFullAddress());
-        }
-        if (dto.getCity() != null) {
-            contact.setCity(dto.getCity());
-        }
-        if (dto.getPinCode() != null) {
-            contact.setPinCode(dto.getPinCode());
-        }
-        if (dto.getMobileNumber() != null) {
-            contact.setMobileNumber(dto.getMobileNumber());
-        }
-        if (dto.getAlternateNumber() != null) {
-            contact.setAlternateNumber(dto.getAlternateNumber());
-        }
+        ContactDetails contact = contactDetailsRepo.findByUser_Id(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("Contact details not found"));
 
-        return contactDetailsRepo.save(contact);
+        ContactDetailsMapper.updateEntity(contact, dto);
+
+        return ContactDetailsMapper.toDTO(
+                contactDetailsRepo.save(contact)
+        );
+    }
+
+    @Override
+    public BaseResponseDTO deleteContactDetails() {
+
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
+
+        ContactDetails contact = contactDetailsRepo.findByUser_Id(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("Contact details not found"));
+
+        contactDetailsRepo.delete(contact);
+        BaseResponseDTO response=new BaseResponseDTO();
+        response.setUserID(userId);
+        response.setCode("200");
+        response.setMessage("Contact Details Deleted successfully");
+
+        return response;
     }
 }

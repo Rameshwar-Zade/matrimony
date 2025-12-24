@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ContactDetailsRepository extends JpaRepository<ContactDetails,Integer> {
+
     ContactDetails findByUserId(Integer id);
 
     Optional<ContactDetails> findByUser_Id(Integer userId);
 
-    void deleteByUserId(Integer userID);
+    boolean existsByUser_Id(Integer userId);
 }
