@@ -7,11 +7,11 @@ import lombok.Setter;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "expectation_complete")
+@Table(name = "partner_expectation")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ExpectationsComplete {
+public class PartnerExpectation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
