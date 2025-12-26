@@ -13,7 +13,7 @@ public class EducationAndProfessionDto {
     private String occupation;
     private String occupationDetails;
     private Integer incomePerYear;
-    private String status1;
+    private String status;
     private String educationAndProfessionalDetailsCol;
     private Integer userId;
 }

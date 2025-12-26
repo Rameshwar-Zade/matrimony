@@ -26,11 +26,11 @@ public class FamilyBackgroundController {
         return ResponseEntity.ok(savedDto);
     }
 
-    @GetMapping("/{id}")
-   public ResponseEntity<FamilyBackgroundDto> getFamilyBackgroundDetails(@PathVariable("id") Integer id) {
-        FamilyBackgroundDto dto = service.getById(id);
-       return ResponseEntity.ok(dto);
-   }
+//    @GetMapping("/{id}")
+//   public ResponseEntity<FamilyBackgroundDto> getFamilyBackgroundDetails(@PathVariable("id") Integer id) {
+//        FamilyBackgroundDto dto = service.getById(id);
+//       return ResponseEntity.ok(dto);
+
 
     @GetMapping()
     public ResponseEntity<FamilyBackgroundDto> getByCurrentUser() {
@@ -51,6 +51,8 @@ public class FamilyBackgroundController {
         service.delete(id);
         return ResponseEntity.ok("Family Background deleted successfully with id: " + id);
     }
+
+
 
 }
 

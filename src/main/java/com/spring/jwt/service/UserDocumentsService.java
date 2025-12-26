@@ -27,6 +27,11 @@ public interface UserDocumentsService {
     UserDocumentsDto uploadAll(MultipartFile pan, MultipartFile aadhaar,
                      MultipartFile profilePhoto, MultipartFile salarySlip,
                      MultipartFile biodata, MultipartFile leavingCertificate);
+
+    UserDocumentsDto getLoggedInUser();
+
+
+
 }
 
 

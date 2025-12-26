@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 @RestController
 @RequestMapping("/api/user-documents")
 @RequiredArgsConstructor
@@ -36,8 +35,15 @@ public class UserDocumentsController {
                 salarySlip,
                 biodata,
                 leavingCertificate
+
                 )
         );
+    }
+
+    @GetMapping
+   public ResponseEntity<UserDocumentsDto> getByLoggedInUser(){
+            UserDocumentsDto dto= userDocumentsService.getLoggedInUser();
+            return ResponseEntity.ok(dto);
     }
 
 }

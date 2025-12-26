@@ -2,19 +2,25 @@ package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.UserDocumentsDto;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.entity.UserDocuments;
+import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
+import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.mapper.FamilyBackgroundMapper;
 import com.spring.jwt.mapper.UserDocumentsMapper;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.UserDocumentsRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.UserDocumentsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.spring.jwt.jwt.JwtService;
 
 import java.io.IOException;
 
@@ -28,6 +34,9 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
 
     private final CompleteProfileRepository completeProfileRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
     public UserDocumentsServiceImpl(UserDocumentsRepository userDocumentsRepository,
                                     UserRepository userRepository,
                                     CompleteProfileRepository completeProfileRepository) {
@@ -35,44 +44,27 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
         this.userRepository = userRepository;
         this.completeProfileRepository = completeProfileRepository;
     }
-
-
-    // 🔐 Get user from JWT
-    private User getLoggedInUser() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null ||
-                !authentication.isAuthenticated() ||
-                authentication.getPrincipal().equals("anonymousUser")) {
-
-            throw new RuntimeException("User is not authenticated");
-        }
-
-        String email = authentication.getName();
-
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found with email: " + email);
-        }
-
-        return user;
-    }
-
-
     @Override
     public UserDocumentsDto uploadAll(MultipartFile pan, MultipartFile aadhaar,
                                    MultipartFile profilePhoto, MultipartFile salarySlip,
                                    MultipartFile biodata,
                                    MultipartFile leavingCertificate) {
 
-        User loggedInUser = getLoggedInUser();
+        String token = jwtService.extractToken();
+        Integer userId = jwtService.extractUserId(token);
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
-        UserDocuments documents = userDocumentsRepository.findByUser(loggedInUser)
-                .orElse(new UserDocuments());
-        documents.setUser(loggedInUser);
+        if (userDocumentsRepository.existsByUser(user))
+        {
+            throw new ProfileNotFoundException(
+                    "User documents already exist"
+            );
+        }
+        UserDocuments documents = new UserDocuments();
+        documents.setUser(user);
+
 
         try{
 
@@ -99,10 +91,10 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
     UserDocuments saved = userDocumentsRepository.save(documents);
 
         CompleteProfile cp=
-                completeProfileRepository.findByUserId(loggedInUser.getId())
+                completeProfileRepository.findByUserId(userId)
                         .orElseGet(() -> {
                             CompleteProfile newCp = new CompleteProfile();
-                            newCp.setUserId(loggedInUser.getId());
+                            newCp.setUserId(userId);
                             return completeProfileRepository.save(newCp);
                         });
 
@@ -113,6 +105,27 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
 
                             return UserDocumentsMapper.toDto(saved);
 
+    }
+
+    // 🔐 Get user from JWT
+    public UserDocumentsDto getLoggedInUser() {
+
+
+        // Get logged-in username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch user
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        // Fetch by user
+        UserDocuments entity = userDocumentsRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "UserDocuments not found for user: " + username));
+
+        return UserDocumentsMapper.toDto(entity);
     }
 
     }

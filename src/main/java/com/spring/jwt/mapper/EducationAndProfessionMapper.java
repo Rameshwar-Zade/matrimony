@@ -18,7 +18,7 @@ public class EducationAndProfessionMapper {
         dto.setOccupation(entity.getOccupation());
         dto.setOccupationDetails(entity.getOccupationDetails());
         dto.setIncomePerYear(entity.getIncomePerYear());
-        dto.setStatus1(entity.getStatus1());
+        dto.setStatus(entity.getStatus());
         dto.setEducationAndProfessionalDetailsCol(entity.getEducationAndProfessionalDetailsCol());
         dto.setUserId(entity.getUser().getId());
         return dto;
@@ -37,7 +37,7 @@ public class EducationAndProfessionMapper {
         entity.setOccupation(dto.getOccupation());
         entity.setOccupationDetails(dto.getOccupationDetails());
         entity.setIncomePerYear(dto.getIncomePerYear());
-        entity.setStatus1(dto.getStatus1());
+        entity.setStatus(dto.getStatus());
         entity.setEducationAndProfessionalDetailsCol(dto.getEducationAndProfessionalDetailsCol());
         entity.setUser(user);
 

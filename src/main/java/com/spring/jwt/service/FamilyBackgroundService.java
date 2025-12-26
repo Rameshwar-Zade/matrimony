@@ -7,9 +7,6 @@ import java.util.List;
 public interface FamilyBackgroundService {
     FamilyBackgroundDto create(FamilyBackgroundDto dto);
 
-    FamilyBackgroundDto getById(Integer id);
-
-    List<FamilyBackgroundDto> getAll();
 
     FamilyBackgroundDto update(Integer id, FamilyBackgroundDto dto);
 
