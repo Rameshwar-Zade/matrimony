@@ -6,23 +6,18 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.Id;
-
-
 import java.time.Instant;
-
 @Entity
 @Table(
         name = "interests",
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"sender_id", "receiver_id"}
-        )
+        uniqueConstraints = @UniqueConstraint(columnNames = {"sender_id", "receiver_id"})
 )
 @Data
 public class Interest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer InterestId;
+    private Integer interestId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)

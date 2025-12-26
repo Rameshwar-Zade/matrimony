@@ -1,6 +1,7 @@
 package com.spring.jwt.repository;
 
 import com.spring.jwt.entity.ContactDetails;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface ContactDetailsRepository extends JpaRepository<ContactDetails,I
     Optional<ContactDetails> findByUser_Id(Integer userId);
 
     boolean existsByUser_Id(Integer userId);
+
+    boolean existsByMobileNumber(Long mobileNumber);
 }

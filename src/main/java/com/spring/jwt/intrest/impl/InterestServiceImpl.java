@@ -3,38 +3,40 @@ package com.spring.jwt.intrest.impl;
 import com.spring.jwt.entity.Interest;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.enums.InterestStatus;
-import com.spring.jwt.exception.DuplicateInterestException;
-import com.spring.jwt.exception.InterestNotFoundException;
-import com.spring.jwt.exception.UnauthorizedException;
+import com.spring.jwt.exception.*;
 import com.spring.jwt.intrest.InterestDTO;
 import com.spring.jwt.intrest.InterestMapper;
+import com.spring.jwt.intrest.InterestResponseDTO;
 import com.spring.jwt.intrest.InterestService;
+import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.repository.InterestRepository;
 import com.spring.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
+@Transactional
 public class InterestServiceImpl implements InterestService {
+
+    @Autowired
+    private InterestRepository interestRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private InterestRepository interestRepository;
+    private JwtService jwtService;
 
-    // Send Interest
     @Override
-    public void sendInterest(Integer receiverId) {
+    public InterestResponseDTO sendInterest(Integer receiverId) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email);
-        Integer senderId =user.getId();
+        Integer senderId = jwtService.extractUserId(jwtService.extractToken());
 
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new InterestNotFoundException("Sender not found"));
@@ -46,16 +48,10 @@ public class InterestServiceImpl implements InterestService {
             throw new UnauthorizedException("Cannot send interest to yourself");
         }
 
-
         if (interestRepository.findBySenderAndReceiver(sender, receiver).isPresent()) {
             throw new DuplicateInterestException("Interest already sent");
         }
 
-
-        if (interestRepository.findBySenderAndReceiver(receiver, sender).isPresent()) {
-            throw new DuplicateInterestException(
-                    "This user has already sent you an interest");
-        }
 
         Interest interest = new Interest();
         interest.setSender(sender);
@@ -63,46 +59,112 @@ public class InterestServiceImpl implements InterestService {
         interest.setStatus(InterestStatus.PENDING);
 
         interestRepository.save(interest);
+        InterestResponseDTO response = new InterestResponseDTO();
+        response.setSenderID(sender.getId());
+        response.setReceiverID(receiver.getId());
+        response.setCode("200");
+        response.setMessage("Interest sent successfully");
+
+        return response;
     }
 
-    // Response to Interest
+//    @Override
+//    public InterestResponseDTO respondInterest(Integer interestId, InterestStatus status) {
+//
+//        Integer userId = jwtService.extractUserId(jwtService.extractToken());
+//
+//        Interest interest = interestRepository.findById(interestId)
+//                .orElseThrow(() -> new InterestNotFoundException("Interest not found"));
+//
+//        if (!interest.getReceiver().getId().equals(userId)) {
+//            throw new UnauthorizedException("You are not allowed to respond");
+//        }
+//
+//        if (interest.getStatus() != InterestStatus.PENDING) {
+//            throw new DuplicateInterestException("Already responded");
+//        }
+//
+//        interest.setStatus(status);
+//        interestRepository.save(interest);
+//
+//        InterestResponseDTO response = new InterestResponseDTO();
+//        response.setSenderID(sender.getId());
+//        response.setReceiverID(receiver.getId());
+//        response.setCode("200");
+//        response.setMessage("Interest sent successfully");
+//
+//        return response;
+//    }
+
     @Override
-    public void respondInterest(Integer interestId, InterestStatus status) {
+    public InterestResponseDTO acceptInterest(Integer interestId) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer receiverId = jwtService.extractUserId(jwtService.extractToken());
 
-        User user = userRepository.findByEmail(email);
-        Integer receiverId = user.getId();
+        if (interestId == null) {
+            throw new EmptyFieldException("Interest ID cannot be null");
+        }
 
         Interest interest = interestRepository.findById(interestId)
-                .orElseThrow(() -> new InterestNotFoundException("Interest not found"));
+                .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
 
         if (!interest.getReceiver().getId().equals(receiverId)) {
-            throw new UnauthorizedException("Unauthorized");
+            throw new UnauthorizedException("You are not authorized to accept this request");
         }
 
-        if (interest.getStatus() != InterestStatus.PENDING) {
-            throw new DuplicateInterestException("Already responded");
-        }
-
-        interest.setStatus(status);
+        interest.setStatus(InterestStatus.ACCEPTED);
+        interest.setUpdatedAt(Instant.now());
         interestRepository.save(interest);
+
+        InterestResponseDTO response = new InterestResponseDTO();
+        response.setSenderID(interest.getSender().getId());
+        response.setReceiverID(interest.getReceiver().getId());
+        response.setCode("200");
+        response.setMessage("Accepted Interest");
+
+        return response;
+
     }
 
-    //get all sent interest
+    @Override
+    public InterestResponseDTO declineInterest(Integer interestId) {
+
+        Integer receiverId = jwtService.extractUserId(jwtService.extractToken());
+
+        if (interestId == null) {
+            throw new EmptyFieldException("Interest ID cannot be null");
+        }
+
+        Interest interest = interestRepository.findById(interestId)
+                .orElseThrow(() -> new InterestNotFoundException("Interest request not found"));
+
+        if (!interest.getReceiver().getId().equals(receiverId)) {
+            throw new UnauthorizedException("You are not authorized to accept this request");
+        }
+
+        interest.setStatus(InterestStatus.DENIED);
+        interest.setUpdatedAt(Instant.now());
+        interestRepository.save(interest);
+
+        InterestResponseDTO response = new InterestResponseDTO();
+        response.setSenderID(interest.getSender().getId());
+        response.setReceiverID(interest.getReceiver().getId());
+        response.setCode("200");
+        response.setMessage("Interest declined");
+
+        return response;
+
+    }
     @Override
     public List<InterestDTO> getSentInterests() {
 
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-        User sender = userRepository.findByEmail(email);
+        Integer senderId = jwtService.extractUserId(jwtService.extractToken());
 
-        // Fetch interests
+        User sender = userRepository.findById(senderId)
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
         List<Interest> interests = interestRepository.findBySender(sender);
 
-        // Manually convert to DTO list
         List<InterestDTO> dtoList = new ArrayList<>();
 
         for (Interest interest : interests) {
@@ -114,16 +176,12 @@ public class InterestServiceImpl implements InterestService {
     }
 
 
-    // get Received Interest
     @Override
     public List<InterestDTO> getReceivedInterests() {
 
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        User receiver = userRepository.findByEmail(email);
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
+        User receiver = userRepository.findById(userId)
+                .orElseThrow(() -> new InterestNotFoundException("User not found"));
 
         List<Interest> interests = interestRepository.findByReceiver(receiver);
 
@@ -137,18 +195,17 @@ public class InterestServiceImpl implements InterestService {
         return dtoList;
     }
 
-
-    // Cancel interest
     @Override
     public void cancelInterest(Integer interestId) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email);
-        Integer senderId =user.getId();
+        Integer userId = jwtService.extractUserId(jwtService.extractToken());
 
-        Interest interest = interestRepository.findById(senderId)
+        Interest interest = interestRepository.findById(interestId)
                 .orElseThrow(() -> new InterestNotFoundException("Interest not found"));
 
+        if (!interest.getSender().getId().equals(userId)) {
+            throw new UnauthorizedException("You cannot cancel this interest");
+        }
 
         if (interest.getStatus() != InterestStatus.PENDING) {
             throw new DuplicateInterestException("Cannot cancel after response");
@@ -156,6 +213,4 @@ public class InterestServiceImpl implements InterestService {
 
         interestRepository.delete(interest);
     }
-
-
 }

@@ -6,22 +6,16 @@ import com.spring.jwt.ContactDetails.ContactDetailsService;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.ContactDetails;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.ContactDetailsAlreadyExistsException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.ContactDetailsRepository;
 import com.spring.jwt.repository.UserRepository;
-import com.spring.jwt.utils.ApiResponse;
 import com.spring.jwt.utils.BaseResponseDTO;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -48,13 +42,19 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
                 .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
 
         if (contactDetailsRepo.existsByUser_Id(userId)) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "Contact details already exist"
-            );
+            throw new ContactDetailsAlreadyExistsException("Contact Details already exists for this user");
         }
 
-        ContactDetails contact = ContactDetailsMapper.toEntity(dto);
+        if(contactDetailsRepo.existsByMobileNumber(dto.getMobileNumber())){
+            throw new ContactDetailsAlreadyExistsException("This Mobile Number is already used by Another user");
+        }
+
+        ContactDetails contact = new ContactDetails();
+        contact.setFullAddress(dto.getFullAddress());
+        contact.setCity(dto.getCity());
+        contact.setPinCode(dto.getPinCode());
+        contact.setMobileNumber(dto.getMobileNumber());
+        contact.setAlternateNumber(dto.getAlternateNumber());
         contact.setUser(user);
         contactDetailsRepo.save(contact);
 
@@ -95,6 +95,9 @@ public class ContactDetailsServiceImpl implements ContactDetailsService {
         ContactDetails contact = contactDetailsRepo.findByUser_Id(userId)
                 .orElseThrow(() -> new UserNotFoundExceptions("Contact details not found"));
 
+        if(contactDetailsRepo.existsByMobileNumber(dto.getMobileNumber())){
+            throw new ContactDetailsAlreadyExistsException("This Mobile Number is already used by Another user");
+        }
         ContactDetailsMapper.updateEntity(contact, dto);
 
         return ContactDetailsMapper.toDTO(
