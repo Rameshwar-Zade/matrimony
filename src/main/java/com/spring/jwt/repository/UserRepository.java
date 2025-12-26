@@ -30,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByGender(String gender);
 
+  //  User findByUser(String email);
+
 }
