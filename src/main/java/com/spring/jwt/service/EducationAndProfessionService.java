@@ -7,7 +7,7 @@ public interface EducationAndProfessionService {
 
     EducationAndProfessionDto update(Integer id, EducationAndProfessionDto dto);
 
-    EducationAndProfessionDto getById(Integer id);
+//    EducationAndProfessionDto getById(Integer id);
 
     void delete(Integer id);
 

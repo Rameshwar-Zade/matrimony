@@ -3,12 +3,6 @@ package com.spring.jwt.entity;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,19 +40,19 @@ public class EducationAndProfession {
     @Column(nullable = false)
     private Integer incomePerYear;
 
-    @Column(length = 45)
-    private String status1;
+    @Column(name = "status", nullable = false)
+    private String status;
 
     @Column(length = 45)
     private String educationAndProfessionalDetailsCol;
 
-//    @Column
-//    private Integer userId;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @OneToOne(mappedBy = "educationAndProfessionalDetails")
-    private Status status;
+    private Status status1;
+
+
 }
