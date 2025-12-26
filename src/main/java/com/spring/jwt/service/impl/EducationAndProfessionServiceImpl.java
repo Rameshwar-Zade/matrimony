@@ -3,9 +3,14 @@ package com.spring.jwt.service.impl;
 import com.spring.jwt.dto.EducationAndProfessionDto;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
+import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
+import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.mapper.EducationAndProfessionMapper;
+import com.spring.jwt.mapper.FamilyBackgroundMapper;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.EducationAndProfessionRepository;
 import com.spring.jwt.repository.UserRepository;
@@ -26,27 +31,34 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
     private final EducationAndProfessionMapper mapper;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private JwtService jwtService;
 
 
     public EducationAndProfessionDto create( EducationAndProfessionDto dto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String token = jwtService.extractToken();
+        Integer userId = jwtService.extractUserId(token);
 
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new RuntimeException("User not found for username: " + username);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (repository.existsByUser_Id(userId)) {
+            throw new ProfileNotFoundException(
+                    "Education & Profession details already exist"
+            );
         }
 
-        EducationAndProfession entity = EducationAndProfessionMapper.toEntity(dto);
 
-        entity.setUser(user);
+        EducationAndProfession entity =
+                EducationAndProfessionMapper.toEntity(dto,user);
 
-//        user.setEducationAndProfession(entity);
+        repository.save(entity);
 
         EducationAndProfession savedEntity = repository.save(entity);
 
-        Integer educationId = savedEntity.getEducationAndProfessionalDetailsId();
+        Integer educationId =
+                savedEntity.getEducationAndProfessionalDetailsId();
 
-        Integer userId = user.getId();
 
         CompleteProfile cp = completeProfileRepository.findByUserId(userId)
                 .orElseGet(() -> {
@@ -147,9 +159,25 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
 
         return mapper.toDto(entity);
 
-
     }
 
+    @Override
+    public EducationAndProfessionDto getByLoggedInUser() {
+        // Get logged-in username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch user
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        EducationAndProfession entity = repository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Education And Profession not found for user: " + username));
+
+        return EducationAndProfessionMapper.toDto(entity);
+    }
 
 }
 

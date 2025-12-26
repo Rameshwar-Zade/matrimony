@@ -2,13 +2,13 @@ package com.spring.jwt.mapper;
 
 import com.spring.jwt.dto.EducationAndProfessionDto;
 import com.spring.jwt.entity.EducationAndProfession;
+import com.spring.jwt.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EducationAndProfessionMapper {
 
     public static EducationAndProfessionDto toDto(EducationAndProfession entity) {
-        if (entity == null) return null;
 
         EducationAndProfessionDto dto = new EducationAndProfessionDto();
 
@@ -24,8 +24,7 @@ public class EducationAndProfessionMapper {
         return dto;
     }
 
-    public static EducationAndProfession toEntity(EducationAndProfessionDto dto) {
-        if (dto == null) return null;
+    public static EducationAndProfession toEntity(EducationAndProfessionDto dto,User user) {
 
         EducationAndProfession entity = new EducationAndProfession();
 
@@ -40,6 +39,7 @@ public class EducationAndProfessionMapper {
         entity.setIncomePerYear(dto.getIncomePerYear());
         entity.setStatus1(dto.getStatus1());
         entity.setEducationAndProfessionalDetailsCol(dto.getEducationAndProfessionalDetailsCol());
+        entity.setUser(user);
 
         return entity;
 

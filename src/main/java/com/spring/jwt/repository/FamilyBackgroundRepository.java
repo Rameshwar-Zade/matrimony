@@ -11,4 +11,6 @@ public interface FamilyBackgroundRepository extends JpaRepository<FamilyBackgrou
 
     Optional<FamilyBackground> findByUser(User user);
 
+    boolean existsByUser_Id(Integer userId);
+
 }

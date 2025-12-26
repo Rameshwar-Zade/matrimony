@@ -36,10 +36,4 @@ public class FamilyBackgroundDto {
 
     private String relativeSurnames;
 
-   // private Integer userId;
-
-   // private Integer statusId; // keep only id, not the entity
-
-    public FamilyBackgroundDto() {
-    }
 }
