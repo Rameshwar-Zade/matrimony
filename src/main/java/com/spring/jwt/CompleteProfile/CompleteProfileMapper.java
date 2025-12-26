@@ -17,7 +17,7 @@ public class CompleteProfileMapper {
     public FullProfileDTO toFullDTO(UserProfile up,
                                     ContactDetails cd,
                                     HoroscopeDetails hd,
-                                    ExpectationsComplete pe,
+                                    PartnerExpectation pe,
                                     EducationAndProfession ep,
                                     FamilyBackground fb) {
 
@@ -34,7 +34,7 @@ public class CompleteProfileMapper {
     }
 
     public PublicProfileDTO toPublicDTO(UserProfile up,
-                                        ExpectationsComplete pe,
+                                        PartnerExpectation pe,
                                         EducationAndProfession ep,
                                         FamilyBackground fb){
 

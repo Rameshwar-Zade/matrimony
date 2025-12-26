@@ -1,9 +1,8 @@
-package com.spring.jwt.controller;
+package com.spring.jwt.horoscopedetails;
 
 import com.spring.jwt.dto.HoroscopeDetailsRequestDTO;
 import com.spring.jwt.dto.HoroscopeDetailsResponseDTO;
 import com.spring.jwt.jwt.JwtService;
-import com.spring.jwt.service.HoroscopeDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +16,14 @@ public class HoroscopeDetailsController {
     private final HoroscopeDetailsService service;
     private final JwtService jwtService;
 
+    // 🔑 Extract userId from JWT token
     private Integer extractUserId(String authHeader) {
-        String token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : authHeader;
+        String token = authHeader.startsWith("Bearer ")
+                ? authHeader.substring(7)
+                : authHeader;
         return jwtService.extractUserId(token);
     }
+
 
     @PostMapping("/create")
     public HoroscopeDetailsResponseDTO create(
@@ -28,25 +31,23 @@ public class HoroscopeDetailsController {
             @RequestBody HoroscopeDetailsRequestDTO dto) {
 
         Integer userId = extractUserId(authHeader);
-        dto.setUserId(userId.intValue());
+        dto.setUserId(userId);
         return service.createHoroscope(dto);
     }
-
-    @GetMapping("/{id}")
-    public HoroscopeDetailsResponseDTO getOne(
-            @RequestHeader("Authorization") String authHeader,
-            @PathVariable Integer id) {
-
-        Integer userId = extractUserId(authHeader);
-        return service.getHoroscope(id);
-    }
-
-    @GetMapping
-    public List<HoroscopeDetailsResponseDTO> getAll(
+    // by token only
+    @GetMapping()
+    public HoroscopeDetailsResponseDTO getMyHoroscope(
             @RequestHeader("Authorization") String authHeader) {
 
         Integer userId = extractUserId(authHeader);
-        return service.getAllHoroscopes();
+        return service.getCurrentUserHoroscope(userId);
+    }
+
+    @GetMapping("/{id}")
+    public HoroscopeDetailsResponseDTO getById(
+            @PathVariable Integer id) {
+
+        return service.getHoroscope(id);
     }
 
     @PutMapping("/{id}")
@@ -56,8 +57,9 @@ public class HoroscopeDetailsController {
             @RequestBody HoroscopeDetailsRequestDTO dto) {
 
         Integer userId = extractUserId(authHeader);
-        return service.updateHoroscope(id, dto);
+        return service.updateHoroscope(id, userId, dto);
     }
+
 
     @PatchMapping("/{id}")
     public HoroscopeDetailsResponseDTO patch(
@@ -70,12 +72,7 @@ public class HoroscopeDetailsController {
     }
 
     @DeleteMapping("/{id}")
-    public String pdelete(
-            @RequestHeader("Authorization") String authHeader,
-            @PathVariable Integer id) {
-
-        Integer userId = extractUserId(authHeader);
+    public String delete(@PathVariable Integer id) {
         return service.deleteHoroscope(id);
     }
 }
-
