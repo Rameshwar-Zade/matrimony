@@ -2,6 +2,7 @@ package com.spring.jwt.controller;
 
 
 import com.spring.jwt.dto.EducationAndProfessionDto;
+import com.spring.jwt.dto.ResponseDto;
 import com.spring.jwt.service.EducationAndProfessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,19 +32,27 @@ public class EducationAndProfessionController {
         return ResponseEntity.ok(dto);
     }
 
-
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<EducationAndProfessionDto>
-    updateEducationAndProfessionalDetails(@PathVariable Integer id,
-                                          @RequestBody EducationAndProfessionDto dto) {
-        EducationAndProfessionDto updatedDto = service.update(id, dto);
-        return ResponseEntity.ok(updatedDto);
-
+    @GetMapping()
+    public ResponseEntity<EducationAndProfessionDto> getByCurrentUser(){
+        EducationAndProfessionDto dto = service.getByLoggedInUser();
+        return ResponseEntity.ok(dto);
     }
+
 
     @DeleteMapping(value="/{id}")
     public void deleteEducationalAndProfessionalDetails(@PathVariable Integer id){
         service.delete(id);
     }
+
+    @PatchMapping(value="/{id}")
+    public ResponseEntity<EducationAndProfessionDto> patchEducationAndProfessionalDetails(@PathVariable Integer id,
+                                                                                          @RequestBody
+                                                                                                  EducationAndProfessionDto dto){
+        EducationAndProfessionDto patchDto=service.partialUpdate(id,dto);
+        return ResponseEntity.ok(patchDto);
+
+    }
+
+
 }
 

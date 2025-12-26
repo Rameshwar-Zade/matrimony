@@ -1,17 +1,17 @@
 package com.spring.jwt.mapper;
 
 import com.spring.jwt.dto.PartnerExpectationDTO;
-import com.spring.jwt.entity.ExpectationsComplete;
+import com.spring.jwt.entity.PartnerExpectation;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PartnerExpectationMapper {
 
     // DTO → Entity (CREATE)
-    public ExpectationsComplete toEntity(PartnerExpectationDTO dto) {
+    public PartnerExpectation toEntity(PartnerExpectationDTO dto) {
         if (dto == null) return null;
 
-        ExpectationsComplete e = new ExpectationsComplete();
+        PartnerExpectation e = new PartnerExpectation();
         e.setAgeFrom(dto.getAgeFrom());
         e.setAgeTo(dto.getAgeTo());
         e.setHeightFeet(dto.getHeightFeet());
@@ -29,7 +29,7 @@ public class PartnerExpectationMapper {
     }
 
 
-    public void updateEntity(ExpectationsComplete e,
+    public void updateEntity(PartnerExpectation e,
                              PartnerExpectationDTO dto) {
 
         if (dto.getAgeFrom() != null)
@@ -72,7 +72,7 @@ public class PartnerExpectationMapper {
             e.setComplexion(dto.getComplexion());
     }
 
-    public static PartnerExpectationDTO toDTO(ExpectationsComplete pe) {
+    public static PartnerExpectationDTO toDTO(PartnerExpectation pe) {
         PartnerExpectationDTO dto= new PartnerExpectationDTO();
 
         dto.setAgeFrom(pe.getAgeFrom());

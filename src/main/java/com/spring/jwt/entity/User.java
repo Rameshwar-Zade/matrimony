@@ -78,5 +78,7 @@ public class User {
     private Set<Role> roles;
 
 
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private UserDocuments documents;
 
 }

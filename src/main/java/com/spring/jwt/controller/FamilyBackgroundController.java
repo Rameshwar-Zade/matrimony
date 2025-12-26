@@ -32,11 +32,11 @@ public class FamilyBackgroundController {
        return ResponseEntity.ok(dto);
    }
 
-   @GetMapping
-   public ResponseEntity<List<FamilyBackgroundDto>>getAllFamilyBackgroundDetails() {
-       List<FamilyBackgroundDto> list = service.getAll();
-       return ResponseEntity.ok(list);
-   }
+    @GetMapping()
+    public ResponseEntity<FamilyBackgroundDto> getByCurrentUser() {
+        FamilyBackgroundDto dto = service.getByLoggedInUser();
+        return ResponseEntity.ok(dto);
+    }
 
 
     @PutMapping("/{id}")
@@ -53,5 +53,4 @@ public class FamilyBackgroundController {
     }
 
 }
-
 

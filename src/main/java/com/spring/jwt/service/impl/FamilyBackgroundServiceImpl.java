@@ -2,14 +2,19 @@ package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.FamilyBackgroundDto;
 import com.spring.jwt.entity.CompleteProfile;
+import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
+import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
+import com.spring.jwt.exception.UserNotFoundExceptions;
+import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.mapper.FamilyBackgroundMapper;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.FamilyBackgroundRepository;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.FamilyBackgroundService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,8 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         private final UserRepository userRepository;
         private final FamilyBackgroundRepository familyBackgroundRepository;
         private final CompleteProfileRepository completeProfileRepository;
+    @Autowired
+    private JwtService jwtService;
 
     public FamilyBackgroundServiceImpl(UserRepository userRepository,
                                        FamilyBackgroundRepository familyBackgroundRepository, CompleteProfileRepository completeProfileRepository) {
@@ -35,24 +42,28 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
     @Override
     public FamilyBackgroundDto create(FamilyBackgroundDto dto) {
 
-        // Get current logged-in user
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(username);
+        String token = jwtService.extractToken();
+        Integer userId = jwtService.extractUserId(token);
 
-        if (user == null) {
-            throw new RuntimeException("User not found: " + username);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundExceptions("User not found"));
+
+        if (familyBackgroundRepository.existsByUser_Id(userId)) {
+            throw new ProfileNotFoundException(
+                    "familyBackground details already exist"
+            );
         }
 
-        // Convert DTO → Entity
-        FamilyBackground entity = FamilyBackgroundMapper.toEntity(dto);
 
-        entity.setUser(user);
+      // Convert DTO → Entity
+       FamilyBackground entity = FamilyBackgroundMapper.toEntity(dto,user);
+
+        familyBackgroundRepository.save(entity);
 
         FamilyBackground savedEntity = familyBackgroundRepository.save(entity);
 
         // ----------- NEW CODE: Update COMPLETE PROFILE ----------------
 
-        Integer userId = user.getId();
         Integer familyBackgroundId = savedEntity.getFamilyBackgroundId();
 
         CompleteProfile cp = completeProfileRepository.findByUserId(userId)
@@ -116,6 +127,29 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         familyBackgroundRepository.delete(entity);
     }
 
-}
+    @Override
+    public FamilyBackgroundDto getByLoggedInUser() {
+
+
+        // Get logged-in username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch user
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+
+        // Fetch FamilyBackground by user
+        FamilyBackground entity = familyBackgroundRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "FamilyBackground not found for user: " + username));
+
+        return FamilyBackgroundMapper.toDto(entity);
+    }
+
+    }
+
+
 
 

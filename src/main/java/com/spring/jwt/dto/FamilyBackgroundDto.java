@@ -8,6 +8,10 @@ public class FamilyBackgroundDto {
 
     private Integer familyBackgroundId;
 
+    private String fatherName;
+
+    private String motherName;
+
     private String fatherOccupation;
 
     private String motherOccupation;
@@ -32,10 +36,4 @@ public class FamilyBackgroundDto {
 
     private String relativeSurnames;
 
-   // private Integer userId;
-
-   // private Integer statusId; // keep only id, not the entity
-
-    public FamilyBackgroundDto() {
-    }
 }

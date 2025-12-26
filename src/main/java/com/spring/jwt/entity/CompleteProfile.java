@@ -15,6 +15,10 @@ public class CompleteProfile {
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Integer userId;
+//
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     @Column(nullable = true)
     private Integer horoscopeId;
@@ -34,49 +38,11 @@ public class CompleteProfile {
     @Column(name = "family_background_id",nullable = true)
     private Integer familyBackgroundId;
 
+    /* DOCUMENTS */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_documents_id")
+    private UserDocuments userDocuments;
+
 }
 
-//package com.spring.jwt.entity;
 //
-//import jakarta.persistence.*;
-//import lombok.Data;
-//
-//
-//@Entity
-//@Data
-//public class CompleteProfile {
-//
-//    @Id
-//    @Column(nullable = false, updatable = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Integer completeProfileId;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "userProfileId")
-//    private UserProfile userProfile;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "horoscopeDetailsId")
-//    private HoroscopeDetails horoscopeDetails;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "educationId")
-//    private EducationAndProfession educationAndProfession;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "familyBackgroundId")
-//    private FamilyBackground familyBackground;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "expectationsId")
-//    private PartnerPreference partnerPreference;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "contactNumberId")
-//    private ContactDetails contactDetails;
-//
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//}

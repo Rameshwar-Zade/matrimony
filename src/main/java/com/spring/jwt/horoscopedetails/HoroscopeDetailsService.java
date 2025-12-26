@@ -1,21 +1,17 @@
-package com.spring.jwt.service;
+package com.spring.jwt.horoscopedetails;
 
 import com.spring.jwt.dto.HoroscopeDetailsRequestDTO;
 import com.spring.jwt.dto.HoroscopeDetailsResponseDTO;
 
-import java.util.List;
 
 public interface HoroscopeDetailsService {
 
+
     HoroscopeDetailsResponseDTO createHoroscope(HoroscopeDetailsRequestDTO dto);
-
+    // only by token
+    HoroscopeDetailsResponseDTO getCurrentUserHoroscope(Integer userId);
     HoroscopeDetailsResponseDTO getHoroscope(Integer id);
-
-    List<HoroscopeDetailsResponseDTO> getAllHoroscopes();
-
-    HoroscopeDetailsResponseDTO updateHoroscope(Integer id, HoroscopeDetailsRequestDTO dto);
-
+    HoroscopeDetailsResponseDTO updateHoroscope(Integer id, Integer userId, HoroscopeDetailsRequestDTO dto);
     HoroscopeDetailsResponseDTO patchHoroscope(Integer id, HoroscopeDetailsRequestDTO dto);
-
     String deleteHoroscope(Integer id);
 }

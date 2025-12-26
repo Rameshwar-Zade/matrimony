@@ -9,6 +9,8 @@ import com.spring.jwt.enums.Gender;
 import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.exception.UserProfileNotFoundException;
+import com.spring.jwt.horoscopedetails.HoroscopeDetailsRepository;
+import com.spring.jwt.partnerexpectations.PartnerExpectationsRepository;
 import com.spring.jwt.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
     @Autowired
     private FamilyBackgroundRepository familyBackgroundRepository;
     @Autowired
-    private ExpectationsCompleteRepository expectationRepository;
+    private PartnerExpectationsRepository expectationRepository;
 
     @Autowired
     private EducationAndProfessionRepository educationAndProfessionRepository;
@@ -62,7 +64,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
 
         // Public profile should NOT fail if these details are missing
         ContactDetails cd = contactDetailsRepository.findById(cp.getContactNumberId()).orElse(null);
-        ExpectationsComplete ec = expectationRepository.findById(cp.getPartnerExpectationId()).orElse(null);
+        PartnerExpectation ec = expectationRepository.findById(cp.getPartnerExpectationId()).orElse(null);
         EducationAndProfession ep = educationAndProfessionRepository.findById(cp.getEducationId()).orElse(null);
         FamilyBackground fb = familyBackgroundRepository.findById(cp.getFamilyBackgroundId()).orElse(null);
         HoroscopeDetails hd = horoscopeDetailsRepository.findById(cp.getHoroscopeId()).orElse(null);
@@ -82,7 +84,7 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
                 .orElseThrow(() -> new UserProfileNotFoundException("This User Doesn't Have Profile"));
 
         // Public profile should NOT fail if these details are missing
-        ExpectationsComplete ec = expectationRepository.findById(cp.getPartnerExpectationId()).orElse(null);
+        PartnerExpectation ec = expectationRepository.findById(cp.getPartnerExpectationId()).orElse(null);
         EducationAndProfession ep = educationAndProfessionRepository.findById(cp.getEducationId()).orElse(null);
         FamilyBackground fb = familyBackgroundRepository.findById(cp.getFamilyBackgroundId()).orElse(null);
 
@@ -118,4 +120,3 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
     }
 
 }
-

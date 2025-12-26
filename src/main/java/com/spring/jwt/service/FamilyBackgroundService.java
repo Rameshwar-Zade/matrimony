@@ -14,4 +14,6 @@ public interface FamilyBackgroundService {
     FamilyBackgroundDto update(Integer id, FamilyBackgroundDto dto);
 
     void delete(Integer id);
+
+    FamilyBackgroundDto getByLoggedInUser();
 }

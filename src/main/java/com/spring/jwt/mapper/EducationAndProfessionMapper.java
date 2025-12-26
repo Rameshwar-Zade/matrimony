@@ -2,13 +2,13 @@ package com.spring.jwt.mapper;
 
 import com.spring.jwt.dto.EducationAndProfessionDto;
 import com.spring.jwt.entity.EducationAndProfession;
+import com.spring.jwt.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EducationAndProfessionMapper {
 
     public static EducationAndProfessionDto toDto(EducationAndProfession entity) {
-        if (entity == null) return null;
 
         EducationAndProfessionDto dto = new EducationAndProfessionDto();
 
@@ -18,14 +18,13 @@ public class EducationAndProfessionMapper {
         dto.setOccupation(entity.getOccupation());
         dto.setOccupationDetails(entity.getOccupationDetails());
         dto.setIncomePerYear(entity.getIncomePerYear());
-        dto.setStatus(entity.getStatus1());
+        dto.setStatus1(entity.getStatus1());
         dto.setEducationAndProfessionalDetailsCol(entity.getEducationAndProfessionalDetailsCol());
         dto.setUserId(entity.getUser().getId());
         return dto;
     }
 
-    public static EducationAndProfession toEntity(EducationAndProfessionDto dto) {
-        if (dto == null) return null;
+    public static EducationAndProfession toEntity(EducationAndProfessionDto dto,User user) {
 
         EducationAndProfession entity = new EducationAndProfession();
 
@@ -38,8 +37,9 @@ public class EducationAndProfessionMapper {
         entity.setOccupation(dto.getOccupation());
         entity.setOccupationDetails(dto.getOccupationDetails());
         entity.setIncomePerYear(dto.getIncomePerYear());
-        entity.setStatus1(dto.getStatus());
+        entity.setStatus1(dto.getStatus1());
         entity.setEducationAndProfessionalDetailsCol(dto.getEducationAndProfessionalDetailsCol());
+        entity.setUser(user);
 
         return entity;
 

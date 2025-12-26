@@ -2,6 +2,8 @@ package com.spring.jwt.userprofile;
 
 import com.spring.jwt.utils.BaseResponseDTO;
 
+import java.util.List;
+
 
 public interface UserProfileService {
 

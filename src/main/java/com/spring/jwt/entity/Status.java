@@ -35,8 +35,8 @@ public class Status {
     private FamilyBackground familyBackground;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "partner_preference_expectations_id", nullable = false)
-    private PartnerPreference partnerPreference;
+    @JoinColumn(name = "partner_expectations_id", nullable = false)
+    private PartnerExpectation partnerExpectation;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_number_contact_number_id", nullable = false)
