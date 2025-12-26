@@ -77,5 +77,5 @@ public class HoroscopeDetailsController {
         Integer userId = extractUserId(authHeader);
         return service.deleteHoroscope(id);
     }
-}//update
+}
 

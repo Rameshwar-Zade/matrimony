@@ -13,6 +13,8 @@ public interface EducationAndProfessionService {
 
     EducationAndProfessionDto partialUpdate(Integer id, EducationAndProfessionDto dto);
 
+    EducationAndProfessionDto getByLoggedInUser();
+
 }
 
 
