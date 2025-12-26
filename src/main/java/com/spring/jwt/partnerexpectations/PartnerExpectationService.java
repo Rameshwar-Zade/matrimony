@@ -1,9 +1,6 @@
 package com.spring.jwt.partnerexpectations;
 
 import com.spring.jwt.dto.PartnerExpectationDTO;
-import com.spring.jwt.entity.PartnerExpectation;
-
-import java.util.List;
 
 public interface PartnerExpectationService {
 
