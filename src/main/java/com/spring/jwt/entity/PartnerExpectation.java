@@ -20,7 +20,6 @@ public class PartnerExpectation {
     @Column(name = "user_id", unique = true, nullable = false)
     private Integer userId;
 
-
     private Integer ageFrom;
     private Integer ageTo;
 
