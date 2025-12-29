@@ -4,6 +4,7 @@ import com.spring.jwt.dto.PartnerExpectationDTO;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.PartnerExpectation;
 import com.spring.jwt.exception.PartnerExpectationAlreadyExistsException;
+import com.spring.jwt.exception.PartnerExpectationNotFoundException;
 import com.spring.jwt.mapper.PartnerExpectationMapper;
 import com.spring.jwt.partnerexpectations.PartnerExpectationService;
 import com.spring.jwt.partnerexpectations.PartnerExpectationsRepository;
@@ -22,43 +23,46 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
     private final CompleteProfileRepository completeProfileRepo;
     private final PartnerExpectationMapper mapper;
 
-
     @Override
     public PartnerExpectationDTO createExpectation(
             Integer userId,
             PartnerExpectationDTO dto) {
 
-        PartnerExpectation existing =
-                expectationsRepo.findByUserId(userId);
+        PartnerExpectation existing = expectationsRepo.findByUserId(userId);
 
         if (existing != null) {
             throw new PartnerExpectationAlreadyExistsException(
                     "Partner expectations already exist. Please update instead of creating again."
             );
         }
+
         PartnerExpectation entity = mapper.toEntity(dto);
         entity.setUserId(userId);
+
         PartnerExpectation saved = expectationsRepo.save(entity);
+
         CompleteProfile cp = completeProfileRepo.findByUserId(userId)
                 .orElseThrow(() ->
                         new IllegalStateException("Complete profile not created yet"));
+
         cp.setPartnerExpectationId(saved.getId());
         completeProfileRepo.save(cp);
 
         return PartnerExpectationMapper.toDTO(saved);
     }
 
-    // by  token
+    // get by token
     @Override
     public PartnerExpectationDTO getCurrentUserExpectation(Integer userId) {
-        PartnerExpectation entity =
-                expectationsRepo.findByUserId(userId);
+
+        PartnerExpectation entity = expectationsRepo.findByUserId(userId);
+
         if (entity == null) {
-            throw new RuntimeException("Partner expectation not found");
+            throw new PartnerExpectationNotFoundException("Partner expectation not found");
         }
+
         return PartnerExpectationMapper.toDTO(entity);
     }
-
 
     @Override
     public PartnerExpectationDTO updateExpectation(
@@ -68,32 +72,30 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
 
         PartnerExpectation entity = expectationsRepo.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Expectation not found"));
+                        new PartnerExpectationNotFoundException("Partner expectation not found"));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new RuntimeException(
-                    "You are not allowed to update this expectation");
+            throw new RuntimeException("You are not allowed to update this expectation");
         }
+
         mapper.updateEntity(entity, dto);
-        entity.setUserId(userId);
         return PartnerExpectationMapper.toDTO(
                 expectationsRepo.save(entity)
         );
     }
-
 
     @Override
     public PartnerExpectationDTO patchExpectation(
             Integer id,
             Integer userId,
             PartnerExpectationDTO dto) {
+
         PartnerExpectation entity = expectationsRepo.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Expectation not found"));
+                        new PartnerExpectationNotFoundException("Partner expectation not found"));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new RuntimeException(
-                    "You are not allowed to update this expectation");
+            throw new RuntimeException("You are not allowed to update this expectation");
         }
 
         mapper.updateEntity(entity, dto);
@@ -103,15 +105,16 @@ public class PartnerExpectationServiceImpl implements PartnerExpectationService 
         );
     }
 
-
     @Override
-    public void deleteExpectation(Integer id) {
+    public void deleteExpectation(Integer id, Integer userId) {
 
         PartnerExpectation entity = expectationsRepo.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Expectation not found"));
+                        new PartnerExpectationNotFoundException("Partner expectation not found"));
 
-        Integer userId = entity.getUserId();
+        if (!entity.getUserId().equals(userId)) {
+            throw new RuntimeException("You are not allowed to delete this expectation");
+        }
 
         completeProfileRepo.findByUserId(userId)
                 .ifPresent(cp -> {

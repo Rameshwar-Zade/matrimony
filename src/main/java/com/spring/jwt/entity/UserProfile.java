@@ -102,12 +102,4 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @Column(nullable = false)
-    private String country;
-
 }
-
-//PinCode 6 digit
-// Mobile no 10 digits must be starts with 6-9
-//Height must be in decimal format

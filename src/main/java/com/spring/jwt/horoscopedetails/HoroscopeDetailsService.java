@@ -10,7 +10,6 @@ public interface HoroscopeDetailsService {
     HoroscopeDetailsResponseDTO createHoroscope(HoroscopeDetailsRequestDTO dto);
     // only by token
     HoroscopeDetailsResponseDTO getCurrentUserHoroscope(Integer userId);
-    HoroscopeDetailsResponseDTO getHoroscope(Integer id);
     HoroscopeDetailsResponseDTO updateHoroscope(Integer id, Integer userId, HoroscopeDetailsRequestDTO dto);
     HoroscopeDetailsResponseDTO patchHoroscope(Integer id, HoroscopeDetailsRequestDTO dto);
     String deleteHoroscope(Integer id);

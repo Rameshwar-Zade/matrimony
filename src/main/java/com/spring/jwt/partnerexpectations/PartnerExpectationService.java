@@ -9,5 +9,5 @@ public interface PartnerExpectationService {
     PartnerExpectationDTO getCurrentUserExpectation(Integer userId);
     PartnerExpectationDTO updateExpectation( Integer id, Integer userId, PartnerExpectationDTO dto);
     PartnerExpectationDTO patchExpectation(Integer id, Integer userId, PartnerExpectationDTO dto);
-    void deleteExpectation(Integer id);
+    void deleteExpectation(Integer id, Integer userId);
 }

@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,7 +25,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -43,7 +40,6 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 .code(e.getCode())
                 .message(e.getMessage())
                 .build();
-
         HttpStatus status;
         try {
             status = HttpStatus.valueOf(Integer.parseInt(e.getCode()));
@@ -78,9 +74,28 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({EmptyFieldException.class, UserAlreadyExistException.class})
-    public ResponseEntity<ErrorResponseDto> handleCommonExceptions(RuntimeException exception, WebRequest webRequest) {
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserAlreadyExists(
+            UserAlreadyExistException exception, WebRequest webRequest) {
+
+        log.error("User already exists: {}", exception.getMessage());
+
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+    }
+
+
+    @ExceptionHandler(EmptyFieldException.class)
+    public ResponseEntity<ErrorResponseDto> handleCommonExceptions(
+            RuntimeException exception, WebRequest webRequest) {
+
         log.error("Validation error: {}", exception.getMessage());
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false),
                 HttpStatus.BAD_REQUEST,
@@ -90,8 +105,9 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidOtpException.class)
-    public ResponseEntity<ErrorResponseDto> handleInvalidOtpException(InvalidOtpException exception, WebRequest webRequest){
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidOtpException(InvalidRequestException exception, WebRequest webRequest){
         log.error("Invalid OTP: {}", exception.getMessage());
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false),
@@ -290,7 +306,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    // In your GlobalExceptionHandler.java
+
     @ExceptionHandler(NotesNotCreatedException.class)
     public ResponseEntity<Map<String, Object>> handleNotesNotCreatedException(NotesNotCreatedException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -300,6 +316,8 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         body.put("message", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+
 
     @ExceptionHandler(UserProfileNotFoundException.class)
     public ResponseEntity<Map<String,String>> handleProfile(UserProfileNotFoundException ex) {

@@ -1,12 +1,10 @@
 package com.spring.jwt.controller;
 
-import com.spring.jwt.utils.CaptchaResponse;
 import com.spring.jwt.dto.*;
 import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.repository.UserRepository;
 import com.spring.jwt.service.UserService;
 import com.spring.jwt.utils.BaseResponseDTO;
-import com.spring.jwt.dto.VerifyOtpRequest;
 import com.spring.jwt.utils.EncryptionUtil;
 import com.spring.jwt.utils.ErrorResponseDto;
 import com.spring.jwt.utils.ResponseDto;
@@ -562,28 +560,6 @@ public class UserController {
         }
         return null;
     }
-    @PostMapping("/password/otp/send")
-    public ResponseEntity<ResponseDto> sendForgotOtp(@RequestBody ForgotOtpRequest req) {
-        return ResponseEntity.ok(userService.sendForgotOtp(req));
-    }
-
-    @PostMapping("/password/otp/verify")
-    public ResponseEntity<ResponseDto> verifyForgotOtp(@RequestBody VerifyOtpRequest req) {
-        return ResponseEntity.ok(userService.verifyForgotOtp(req));
-    }
-
-    @PostMapping("/password/otp/reset")
-    public ResponseEntity<ResponseDto> resetPasswordByOtp(@RequestBody ResetPasswordByOtpRequest req) {
-        return ResponseEntity.ok(userService.resetPasswordByOtp(req));
-    }
-
-    @GetMapping("/captcha")
-    public ResponseEntity<CaptchaResponse> getCaptcha(){
-        return ResponseEntity.ok(userService.getCaptcha());
-    }
-
-
-
 }
 
 

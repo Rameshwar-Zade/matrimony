@@ -33,11 +33,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import com.spring.jwt.utils.CaptchaResponse;
-import com.spring.jwt.dto.ForgotOtpRequest;
-import com.spring.jwt.dto.VerifyOtpRequest;
-import com.spring.jwt.dto.ResetPasswordByOtpRequest;
-import com.spring.jwt.utils.OtpUtil;
 
 
 import java.time.LocalDateTime;
@@ -270,18 +265,18 @@ public class UserServiceImpl implements UserService {
             log.warn("Forgot password attempt with empty email");
             return new ResponseDto("Unsuccessful", "Email is required");
         }
-        
+
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            log.warn("Forgot password attempt for non-existent email: {}", 
+            log.warn("Forgot password attempt for non-existent email: {}",
                     DataMaskingUtils.maskEmail(email));
             throw new UserNotFoundExceptions("User not found with email: " + email);
         }
 
         String token = RandomStringUtils.randomAlphanumeric(64);
-        log.debug("Generated password reset token for user: {}", 
+        log.debug("Generated password reset token for user: {}",
                 DataMaskingUtils.maskEmail(email));
-        
+
         updateResetPassword(token, email);
 
         String resetPasswordLink = passwordResetUrl + "?token=" + token;
@@ -597,87 +592,4 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public ResponseDto sendForgotOtp(ForgotOtpRequest req) {
-
-        String mobile = req.getEmailOrMobile();
-
-        Optional<User> userOpt = userRepository.findByMobileNumber(mobile);
-
-        if (userOpt.isEmpty()) {
-            return new ResponseDto("Unsuccessful", "Mobile number not found");
-        }
-
-        String otp = String.valueOf((int)(Math.random() * 900000) + 100000);
-
-        otpStore.put(mobile, otp);
-        otpVerified.put(mobile, false);
-
-        System.out.println("📌 OTP for testing = " + otp);
-
-        return new ResponseDto("Success", "OTP sent successfully (SMS demo)");
-    }
-
-
-    // → OTP Verify
-    @Override
-    public ResponseDto verifyForgotOtp(VerifyOtpRequest req) {
-
-        String mobile = req.getEmailOrMobile();
-        String userOtp = req.getOtp();
-
-        String storedOtp = otpStore.get(mobile);
-
-        if (storedOtp == null || !storedOtp.equals(userOtp)) {
-            return new ResponseDto("Unsuccessful", "Invalid OTP");
-        }
-
-        otpVerified.put(mobile, true);
-
-        String tempToken = UUID.randomUUID().toString();
-        tempTokenStore.put(mobile, tempToken);
-
-        return new ResponseDto("Success", "OTP verified", tempToken);
-    }
-
-
-    // → Reset Password After OTP Verified
-    @Override
-    public ResponseDto resetPasswordByOtp(ResetPasswordByOtpRequest req) {
-
-        String mobile = req.getMobile();
-        String token = req.getTempToken();
-
-        if (!tempTokenStore.containsKey(mobile) ||
-                !tempTokenStore.get(mobile).equals(token)) {
-
-            return new ResponseDto("Unsuccessful", "Invalid or expired token");
-        }
-
-        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
-            return new ResponseDto("Unsuccessful", "Passwords do not match");
-        }
-
-        User user = userRepository.findByMobileNumber(mobile)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.setPassword(passwordEncoder.encode(req.getNewPassword()));
-        userRepository.save(user);
-
-
-        tempTokenStore.remove(mobile);
-
-        return new ResponseDto("Success", "Password reset successfully");
-    }
-
-
-    // → Captcha Generator
-    @Override
-    public CaptchaResponse getCaptcha() {
-        String id = UUID.randomUUID().toString();
-        String text = OtpUtil.generateCaptchaText(5);
-        return new CaptchaResponse(id, text);
-    }
-
 }
-
