@@ -400,6 +400,7 @@ public class JwtServiceImpl implements JwtService {
       return claims.get("userId", Integer.class); // convert userId claim to Long
   }
     // ================= TOKEN UTILITY =================
+    @Override
     public String extractToken() {
         ServletRequestAttributes attrs =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

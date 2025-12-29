@@ -32,7 +32,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
     @Autowired
     private final UserRepository userRepository;
     @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
 
     public EducationAndProfessionDto create( EducationAndProfessionDto dto) {
@@ -110,15 +110,6 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
 
 
     @Override
-    public EducationAndProfessionDto getById(Integer id) {
-        EducationAndProfession entity = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Education & Profession not found with id: " + id));
-
-        return EducationAndProfessionMapper.toDto(entity);
-    }
-
-    @Override
     public void delete(Integer id) {
         repository.deleteById(id);
 
@@ -145,7 +136,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
             entity.setOccupationDetails(dto.getOccupationDetails());
         if (dto.getIncomePerYear() !=null)
             entity.setIncomePerYear(dto.getIncomePerYear());
-        if (dto.getStatus1() !=null)
+        if (dto.getStatus() !=null)
             entity.setIncomePerYear(dto.getIncomePerYear());
         if (dto.getEducationAndProfessionalDetailsCol() !=null)
             entity.setEducationAndProfessionalDetailsCol(dto.getEducationAndProfessionalDetailsCol());

@@ -79,6 +79,9 @@ public class UserProfile {
     private String diet;
 
     @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
     private Boolean spectacle;
 
     @Column(nullable = false)
@@ -103,3 +106,10 @@ public class UserProfile {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
+
+
+
+
+//PinCode 6 digit
+// Mobile no 10 digits must be starts with 6-9
+//Height must be in decimal format

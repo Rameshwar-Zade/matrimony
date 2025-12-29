@@ -1,58 +1,33 @@
 package com.spring.jwt.CompleteProfile;
 
-
-import com.spring.jwt.entity.User;
-import com.spring.jwt.enums.Gender;
-import com.spring.jwt.exception.UserNotFoundExceptions;
-import com.spring.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user-profile")
-public class CompleteProfileController{
+@RequestMapping("/api/profile")
+public class CompleteProfileController {
 
     @Autowired
-    private  CompleteProfileService completeProfileService;
+    private CompleteProfileService service;
 
-    @Autowired
-    private UserRepository userRepo;
-
-    // ---------------------- Get full profile -----------------------
-
-    @GetMapping("/get")
-    public ResponseEntity<FullProfileDTO> getFullProfile() {
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepo.findByEmail(email);
-        if(user==null)
-            throw new UserNotFoundExceptions("User not found");
-
-        return ResponseEntity.ok(completeProfileService.getCompleteProfile(user.getId()));
+    @GetMapping("/me/full")
+    public ResponseEntity<FullProfileDTO> myFullProfile() {
+        return ResponseEntity.ok(service.getCurrentUserFullProfile());
     }
 
-    // ---------------------- Get public profile -----------------------
-    @GetMapping("/public/get/{userId}")
-    public ResponseEntity<PublicProfileDTO> getPublicProfile(@PathVariable Integer userId) {
-        PublicProfileDTO dto = completeProfileService.getPublicProfile(userId);
-        return ResponseEntity.ok(dto);
+    @GetMapping("/full/{userId}")
+    public ResponseEntity<FullProfileDTO> fullProfile(@PathVariable Integer userId) {
+        return ResponseEntity.ok(service.getFullProfileByUserId(userId));
     }
 
-
-    // ---------------------- GET ALL PROFILES BY GENDER -----------------------
-    @GetMapping("/get/gender/{gender}")
-    public ResponseEntity<List<FullProfileDTO>> getAllByGender(@PathVariable Gender gender) {
-
-        List<FullProfileDTO> profiles = completeProfileService.getAllByGender(gender);
-
-        return ResponseEntity.ok(profiles);
+    @GetMapping("/public/{userId}")
+    public ResponseEntity<PublicProfileDTO> publicProfile(@PathVariable Integer userId) {
+        return ResponseEntity.ok(service.getPublicProfile(userId));
     }
 
+    @GetMapping("/biodata/{userId}")
+    public ResponseEntity<BioDataDisplayDTO> biodata(@PathVariable Integer userId) {
+        return ResponseEntity.ok(service.getBioData(userId));
+    }
 }

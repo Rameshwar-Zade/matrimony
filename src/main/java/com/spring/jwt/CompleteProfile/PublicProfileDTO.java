@@ -1,25 +1,25 @@
 package com.spring.jwt.CompleteProfile;
 
-import com.spring.jwt.dto.EducationAndProfessionDto;
-import com.spring.jwt.dto.FamilyBackgroundDto;
-import com.spring.jwt.dto.PartnerExpectationDTO;
-import com.spring.jwt.entity.EducationAndProfession;
-import com.spring.jwt.entity.FamilyBackground;
-import com.spring.jwt.entity.UserProfile;
-import com.spring.jwt.userprofile.UserProfileDto;
+import com.spring.jwt.enums.Gender;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class PublicProfileDTO {
+public class  PublicProfileDTO {
 
-    //Before Login
-    private UserProfileDto user; // name, age, height, city
+    private Integer userId;
+    private String lastName;
+    private Date dateOfBirth;
 
-    private EducationAndProfessionDto education;// Occupation Details , Income
-
-    private FamilyBackgroundDto family;  //residentAddress
-
-    private PartnerExpectationDTO partnerExpectations;
-
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    private Integer height;
+    private String district;
+    private String education;
+    private String occupation;
+    private String caste;
 
 }

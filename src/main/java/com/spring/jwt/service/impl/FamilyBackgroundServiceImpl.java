@@ -2,7 +2,6 @@ package com.spring.jwt.service.impl;
 
 import com.spring.jwt.dto.FamilyBackgroundDto;
 import com.spring.jwt.entity.CompleteProfile;
-import com.spring.jwt.entity.EducationAndProfession;
 import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.ProfileNotFoundException;
@@ -80,21 +79,6 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         return FamilyBackgroundMapper.toDto(savedEntity);
     }
 
-    public FamilyBackgroundDto getById(Integer id){
-        FamilyBackground entity = familyBackgroundRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "FamilyBackground details not found with id: " + id));
-
-        return FamilyBackgroundMapper.toDto(entity);
-    }
-
-    public List<FamilyBackgroundDto> getAll(){
-        List<FamilyBackground> entityList = familyBackgroundRepository.findAll();
-        return entityList.stream()
-                .map(FamilyBackgroundMapper::toDto)
-                .collect(Collectors.toList());
-        }
-
         public FamilyBackgroundDto update(Integer id,FamilyBackgroundDto dto){
          FamilyBackground entity=familyBackgroundRepository.findById(id)
                  .orElseThrow(() -> new ResourceNotFoundException("Family Background not found for id " + id));
@@ -144,12 +128,8 @@ public class FamilyBackgroundServiceImpl implements FamilyBackgroundService {
         FamilyBackground entity = familyBackgroundRepository.findByUser(user)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "FamilyBackground not found for user: " + username));
-
         return FamilyBackgroundMapper.toDto(entity);
     }
 
     }
-
-
-
 
