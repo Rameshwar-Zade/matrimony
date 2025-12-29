@@ -1,10 +1,10 @@
 package com.spring.jwt.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "partner_expectation")
@@ -28,13 +28,17 @@ public class PartnerExpectation {
 
     private String lookingFor;
     private String caste;
+
     @NotBlank
     private String education;
+
     private String residentStatus;
-    private String preference;
+    private String income;
     private String country;
     private String eatingHabits;
     private String religion;
+    private String city;
+    private String occupation;
+    private String mangal;
     private String complexion;
-
 }

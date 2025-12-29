@@ -14,7 +14,7 @@ public class HoroscopeDetailsController {
     private final HoroscopeDetailsService service;
     private final JwtService jwtService;
 
-    // 🔑 Extract userId from JWT token
+
     private Integer extractUserId(String authHeader) {
         String token = authHeader.startsWith("Bearer ")
                 ? authHeader.substring(7)
@@ -41,12 +41,7 @@ public class HoroscopeDetailsController {
         return service.getCurrentUserHoroscope(userId);
     }
 
-    @GetMapping("/{id}")
-    public HoroscopeDetailsResponseDTO getById(
-            @PathVariable Integer id) {
 
-        return service.getHoroscope(id);
-    }
 
     @PutMapping("/{id}")
     public HoroscopeDetailsResponseDTO update(

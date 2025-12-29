@@ -86,7 +86,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Override
     public String verifyOtp(VerifyOtpDTO verifyOtpDTO) {
         EmailVerification emailVerification = emailVerificationRepo.findByEmail(verifyOtpDTO.getEmail())
-                .orElseThrow(() -> new InvalidOtpException("Invalid OTP"));
+                .orElseThrow(() -> new InvalidRequestException("Invalid OTP"));
 
         if (Duration.between(emailVerification.getCreationTime(), LocalDateTime.now()).toMinutes() > OTP_EXPIRY_MINUTES) {
             throw new OtpExpiredException("Invalid or expired OTP");
@@ -95,7 +95,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         if (!OtpUtil.verifyOtp(verifyOtpDTO.getOtp(), emailVerification.getOtp(), emailVerification.getSalt())) {
             emailVerification.setAttempts(emailVerification.getAttempts() + 1);
             emailVerificationRepo.save(emailVerification);
-            throw new InvalidOtpException("Invalid OTP. Attempt " + emailVerification.getAttempts());
+            throw new InvalidRequestException("Invalid OTP. Attempt " + emailVerification.getAttempts());
         }
 
         emailVerification.setAttempts(0);
@@ -163,4 +163,39 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             throw new RuntimeException("Error loading email template", e);
         }
     }
+
+    @Override
+    public void sendForgotPasswordOtp(String email) {
+
+        if (email == null || email.isBlank()) {
+            throw new InvalidRequestException("Email is required");
+        }
+
+
+        if (userRepository.findByEmail(email) == null) {
+            throw new UserNotFoundExceptions("User not found");
+        }
+
+        String otp = OtpUtil.generateOtp(6);
+        String salt = OtpUtil.generateSalt();
+        String hashedOtp = OtpUtil.hashOtp(otp, salt);
+
+        saveEmail(email, hashedOtp, salt, LocalDateTime.now());
+
+        sendEmailInternal(
+                loadEmailTemplate("otp_email_template.html").replace("{{otp}}", otp),
+                "Forgot Password OTP",
+                email
+        );
+    }
+
+    @Override
+    public void saveForgotPasswordOtp(String email, String otp) {
+        String salt = OtpUtil.generateSalt();
+        String hashedOtp = OtpUtil.hashOtp(otp, salt);
+        saveEmail(email, hashedOtp, salt, LocalDateTime.now());
+    }
+
+
+
 }

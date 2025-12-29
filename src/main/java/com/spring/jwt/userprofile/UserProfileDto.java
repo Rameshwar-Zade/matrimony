@@ -102,6 +102,8 @@ public class UserProfileDto {
     private String userProfileCol;
 
 
+
+
     @AssertTrue(message = "Mobile number must be 10 digits and start with 6-9")
     public boolean isMobileValid() {
         if (mobileNumber == null) return false;

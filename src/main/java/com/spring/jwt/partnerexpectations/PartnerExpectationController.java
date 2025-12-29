@@ -61,8 +61,13 @@ public class PartnerExpectationController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
-        service.deleteExpectation(id);
+    public String delete(
+            @RequestHeader("Authorization") String auth,
+            @PathVariable Integer id) {
+
+        Integer userId = extractUserId(auth);
+        service.deleteExpectation(id, userId);
         return "Partner expectation deleted successfully";
     }
+
 }

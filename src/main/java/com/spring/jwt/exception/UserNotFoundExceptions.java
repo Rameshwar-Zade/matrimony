@@ -1,13 +1,14 @@
 package com.spring.jwt.exception;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class UserNotFoundExceptions extends RuntimeException {
+
     private final HttpStatus status;
 
+    // Constructor 1
     public UserNotFoundExceptions(String message) {
         super(message);
         this.status = HttpStatus.BAD_REQUEST;
@@ -22,4 +23,3 @@ public class UserNotFoundExceptions extends RuntimeException {
         return status;
     }
 }
-

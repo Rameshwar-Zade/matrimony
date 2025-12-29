@@ -63,12 +63,7 @@ public class HoroscopeDetailsServiceImpl implements HoroscopeDetailsService {
     }
 
 
-    @Override
-    public HoroscopeDetailsResponseDTO getHoroscope(Integer id) {
-        HoroscopeDetails entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Horoscope not found"));
-        return HoroscopeDetailsMapper.toDTO(entity);
-    }
+
     @Override
     public HoroscopeDetailsResponseDTO updateHoroscope(Integer id, Integer userId, HoroscopeDetailsRequestDTO dto) {
         HoroscopeDetails entity = repository.findById(id)

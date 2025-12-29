@@ -114,9 +114,11 @@ public class AppConfig {
                 "/api/**",
                 "/user/**",
                 "/api/users/**",
+                    "/emailVerification/**",
 
 
-                jwtConfig.getUrl(),
+
+                    jwtConfig.getUrl(),
                 jwtConfig.getRefreshUrl()
 
 
@@ -142,6 +144,7 @@ public class AppConfig {
         log.debug("Configuring URL-based security rules");
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/emailVerification/**").permitAll()
                 .requestMatchers("/api/v1/users/register").permitAll()
                 .requestMatchers("/api/v1/users/password/**").permitAll()
                 .requestMatchers("/api/user-profiles/**").permitAll()
@@ -201,7 +204,8 @@ public class AppConfig {
 
         log.debug("Configuring security filters");
         JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter = new JwtUsernamePasswordAuthenticationFilter(authenticationManager(http), jwtConfig, jwtService, userRepository, activeSessionService);
-        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtConfig, jwtService, userDetailsService(), publicUrls, activeSessionService);
+        JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter = new JwtTokenAuthenticationFilter(jwtConfig, jwtService, userDetailsService(),
+                publicUrls, activeSessionService);
         JwtRefreshTokenFilter jwtRefreshTokenFilter = new JwtRefreshTokenFilter(authenticationManager(http), jwtConfig, jwtService, userDetailsService(), activeSessionService);
 
         http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

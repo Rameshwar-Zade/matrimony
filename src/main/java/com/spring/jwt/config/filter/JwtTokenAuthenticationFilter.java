@@ -108,12 +108,13 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         // Minimal allowlist to avoid interfering with public endpoints
         if (path.equals(jwtConfig.getUrl()) || path.equals(jwtConfig.getRefreshUrl())) return true;
         if (path.startsWith("/api/auth/")) return true;
+        if (path.startsWith("/emailVerification/")) return true;
         if (path.startsWith("/api/public/")) return true;
         if (path.startsWith("/v2/api-docs") || path.startsWith("/v3/api-docs")) return true;
         if (path.startsWith("/swagger-ui") || path.equals("/swagger-ui.html")) return true;
         if (path.startsWith("/swagger-resources") || path.startsWith("/configuration/")) return true;
         if (path.startsWith("/webjars/")) return true;
-        if (path.equals("/api/v1/users/register") || path.startsWith("/api/v1/users/password/")) return true;
+//        if (path.equals("/api/v1/users/register") || path.startsWith("/api/v1/users/password/")) return true;
         if (path.equals("/api/v1/papers/solutions/pdf")) return true;
         // Fallback to configured matcher if present
         try { return publicUrls != null && publicUrls.matches(request); } catch (Exception ignored) {}
