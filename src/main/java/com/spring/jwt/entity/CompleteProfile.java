@@ -15,10 +15,6 @@ public class CompleteProfile {
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Integer userId;
-//
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 
     @Column(nullable = true)
     private Integer horoscopeId;
@@ -44,5 +40,3 @@ public class CompleteProfile {
     private UserDocuments userDocuments;
 
 }
-
-//

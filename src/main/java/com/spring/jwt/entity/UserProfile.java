@@ -79,6 +79,9 @@ public class UserProfile {
     private String diet;
 
     @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
     private Boolean spectacle;
 
     @Column(nullable = false)
@@ -103,8 +106,6 @@ public class UserProfile {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    private String country;
 
 }
 

@@ -32,7 +32,7 @@ public class EducationAndProfessionServiceImpl implements EducationAndProfession
     @Autowired
     private final UserRepository userRepository;
     @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
 
     public EducationAndProfessionDto create( EducationAndProfessionDto dto) {

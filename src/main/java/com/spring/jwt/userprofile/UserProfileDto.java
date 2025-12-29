@@ -24,6 +24,9 @@ public class UserProfileDto {
     @NotBlank(message = "Please Enter address")
     private String address;
 
+    //@NotBlank(message = "Please Enter Age")
+    private Integer age;
+
     @NotBlank(message = "Please Enter taluka")
     @Pattern(regexp = "^[A-Za-z\\s'\\-]+$", message = "only letters Allowed")
     private String taluka;

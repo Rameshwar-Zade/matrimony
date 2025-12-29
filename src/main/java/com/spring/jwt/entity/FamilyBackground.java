@@ -24,11 +24,8 @@ public class FamilyBackground {
     @Column(length = 45)
     private String fatherName;
 
-
     @Column(length = 45)
     private String motherName;
-
-
 
     @Column(length = 45)
     private String fatherOccupation;

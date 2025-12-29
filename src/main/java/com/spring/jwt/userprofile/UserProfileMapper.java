@@ -21,6 +21,7 @@ public class UserProfileMapper {
         dto.setTaluka(userProfile.getTaluka());
         dto.setDistrict(userProfile.getDistrict());
         dto.setPinCode(userProfile.getPinCode());
+        dto.setAge(userProfile.getAge());
         dto.setMobileNumber(userProfile.getMobileNumber());
         dto.setMail(userProfile.getMail());
         dto.setStatus(userProfile.getStatus());
@@ -63,6 +64,7 @@ public class UserProfileMapper {
         userProfile.setPinCode(dto.getPinCode());
         userProfile.setMobileNumber(dto.getMobileNumber());
         userProfile.setMail(dto.getMail());
+        userProfile.setAge(dto.getAge());
         userProfile.setStatus(dto.getStatus());
         userProfile.setGender(dto.getGender());
         userProfile.setReligion(dto.getReligion());
@@ -106,6 +108,7 @@ public class UserProfileMapper {
         if (dto.getReligion() != null) profile.setReligion(dto.getReligion());
         if (dto.getCaste() != null) profile.setCaste(dto.getCaste());
         if (dto.getSubCaste() != null) profile.setSubCaste(dto.getSubCaste());
+        if(dto.getAge() != null)  profile.setAge(dto.getAge());
         if (dto.getMaritalStatus() != null) profile.setMaritalStatus(dto.getMaritalStatus());
         if (dto.getHeight() != null) profile.setHeight(dto.getHeight());
         if (dto.getWeight() != null) profile.setWeight(dto.getWeight());
