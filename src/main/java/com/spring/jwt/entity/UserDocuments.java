@@ -18,10 +18,6 @@ UserDocuments {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-//    private Integer userId;
-
-
-
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte [] panCard;

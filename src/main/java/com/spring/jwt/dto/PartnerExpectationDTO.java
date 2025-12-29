@@ -1,10 +1,9 @@
 package com.spring.jwt.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -27,9 +26,12 @@ public class PartnerExpectationDTO {
     private String caste;
     private String education;
     private String residentStatus;
-    private String preference;
+    private String income;
     private String country;
     private String eatingHabits;
     private String religion;
+    private String city;
+    private String occupation;
+    private String mangal;
     private String complexion;
 }

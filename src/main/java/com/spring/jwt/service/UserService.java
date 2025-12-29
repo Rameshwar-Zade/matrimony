@@ -3,10 +3,8 @@ package com.spring.jwt.service;
 import com.spring.jwt.dto.*;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.utils.BaseResponseDTO;
-import com.spring.jwt.dto.VerifyOtpRequest;
 import com.spring.jwt.utils.ResponseDto;
 import org.springframework.data.domain.Page;
-import com.spring.jwt.utils.CaptchaResponse;
 
 
 public interface UserService {
@@ -36,11 +34,6 @@ public interface UserService {
     UserProfileDTO getCurrentUserProfile();
 
     UserDTO updateUser(Long id, UserUpdateRequest request);
-
-    ResponseDto sendForgotOtp(ForgotOtpRequest req);
-    ResponseDto verifyForgotOtp(VerifyOtpRequest req);
-    ResponseDto resetPasswordByOtp(ResetPasswordByOtpRequest req);
-    CaptchaResponse getCaptcha();
 
 
 }

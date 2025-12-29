@@ -22,13 +22,15 @@ public class EmailService {
         try {
             Session session = createEmailSession();
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(FROM_EMAIL));
+            message.setFrom(
+                    new InternetAddress(SMTP_USERNAME, "Perfect Match Matrimony")
+            );
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(subject);
             message.setContent(emailContent, "text/html; charset=utf-8");
 
             Transport.send(message);
-        } catch (MessagingException e) {
+        } catch (Exception  e) {
             throw new RuntimeException("Error sending email", e);
         }
     }

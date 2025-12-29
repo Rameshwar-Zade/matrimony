@@ -105,9 +105,10 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-
 }
+
+
+
 
 //PinCode 6 digit
 // Mobile no 10 digits must be starts with 6-9

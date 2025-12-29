@@ -7,6 +7,4 @@ public enum ProfileType {
     SISTER,
     RELATIVE_FRIEND,
     CLIENT_MARRIAGE_BUREAU;
-
-
 }
