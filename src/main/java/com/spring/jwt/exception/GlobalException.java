@@ -348,4 +348,9 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
+    @ExceptionHandler(ContactDetailsAlreadyExistsException.class)
+    public ResponseEntity<String> handleUnauthorized(ContactDetailsAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
 }

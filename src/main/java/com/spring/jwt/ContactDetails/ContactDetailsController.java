@@ -1,7 +1,6 @@
 package com.spring.jwt.ContactDetails;
 
 import com.spring.jwt.utils.BaseResponseDTO;
-import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,8 @@ public class ContactDetailsController {
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponseDTO> create(@Valid @RequestBody ContactDetailsDTO dto) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createContactDetails(dto));
+         BaseResponseDTO response=  service.createContactDetails(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/get")

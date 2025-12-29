@@ -11,7 +11,8 @@ public interface InterestRepository extends JpaRepository<Interest, Integer> {
 
     Optional<Interest> findBySenderAndReceiver(User sender, User receiver);
 
-    List<Interest> findByReceiver(User receiver);
-
     List<Interest> findBySender(User sender);
+
+    List<Interest> findByReceiver(User receiver);
 }
+
