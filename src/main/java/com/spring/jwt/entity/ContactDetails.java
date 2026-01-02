@@ -40,5 +40,4 @@ public class ContactDetails {
     private User user;
 
 
-
 }
