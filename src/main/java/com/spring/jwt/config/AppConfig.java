@@ -154,7 +154,7 @@ public class AppConfig {
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/users/**").permitAll()
                 .requestMatchers("/api/brides/filter").permitAll()
-
+                .requestMatchers("/api/contact-us", "/api/contact-us/**").permitAll()
                 .requestMatchers(jwtConfig.getUrl()).permitAll()
                 .requestMatchers(jwtConfig.getRefreshUrl()).permitAll()
 
