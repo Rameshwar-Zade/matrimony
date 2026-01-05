@@ -21,7 +21,7 @@ public class ContactUsMessage {
     private String email;
 
     @Column(nullable = false)
-    private String phoneNumber;
+    private String mobileNumber;
 
     @Column(nullable = false)
     private String subject;

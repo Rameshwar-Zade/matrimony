@@ -7,7 +7,7 @@ public class ContactUsRequestDTO {
 
     private String fullName;
     private String email;
-    private String phoneNumber;
+    private String mobileNumber;
     private String subject;
     private String message;
 }

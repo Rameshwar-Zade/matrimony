@@ -61,5 +61,4 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteRepository.findByUserId(userId);
     }
 
-
 }

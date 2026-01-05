@@ -2,9 +2,6 @@ package com.spring.jwt.entity;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
