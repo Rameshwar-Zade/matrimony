@@ -1,16 +1,16 @@
 package com.spring.jwt.service.impl;
 
+import com.spring.jwt.repository.EducationAndProfessionRepository;
+
 import com.spring.jwt.dto.EducationAndProfessionDto;
 import com.spring.jwt.entity.CompleteProfile;
 import com.spring.jwt.entity.EducationAndProfession;
-import com.spring.jwt.entity.FamilyBackground;
 import com.spring.jwt.entity.User;
 import com.spring.jwt.exception.ProfileNotFoundException;
 import com.spring.jwt.exception.ResourceNotFoundException;
 import com.spring.jwt.exception.UserNotFoundExceptions;
 import com.spring.jwt.jwt.JwtService;
 import com.spring.jwt.mapper.EducationAndProfessionMapper;
-import com.spring.jwt.mapper.FamilyBackgroundMapper;
 import com.spring.jwt.repository.CompleteProfileRepository;
 import com.spring.jwt.repository.EducationAndProfessionRepository;
 import com.spring.jwt.repository.UserRepository;

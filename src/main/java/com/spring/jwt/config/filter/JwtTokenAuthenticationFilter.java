@@ -63,6 +63,10 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             handleAccessBlocked(response);
             return;
         }
+        if (path.startsWith("/api/contact-us")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (isPublic(request)) {
             log.debug("Skipping JWT filter for public URL: {}", path);

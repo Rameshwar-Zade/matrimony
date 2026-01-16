@@ -15,7 +15,7 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
 
     boolean existsByUser_Id(Integer userId);
 
-    List<UserProfile> findByGender(Gender gender);
+    //List<UserProfile> findByGender(Gender gender);
 
     boolean existsByMobileNumber(Long mobileNumber);
 }

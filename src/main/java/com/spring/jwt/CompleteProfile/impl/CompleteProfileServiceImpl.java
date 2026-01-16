@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional(readOnly = true)
 public class CompleteProfileServiceImpl implements CompleteProfileService {
@@ -97,16 +95,16 @@ public class CompleteProfileServiceImpl implements CompleteProfileService {
                 .orElseThrow(() -> new IncompleteProfileException("Incomplete Contact Details"));
 
         HoroscopeDetails hd=  horoscopeRepository.findById(cp.getHoroscopeId())
-                .orElseThrow(() -> new IncompleteProfileException("Incomplete Contact Details"));
+                .orElseThrow(() -> new IncompleteProfileException("Incomplete Horoscope Details"));
 
         PartnerExpectation pe=  partnerExpectationRepository.findById(cp.getPartnerExpectationId())
-                .orElseThrow(() -> new IncompleteProfileException("Incomplete Contact Details"));
+                .orElseThrow(() -> new IncompleteProfileException("Incomplete Partner expectation Details"));
 
         EducationAndProfession ed=  educationRepository.findById(cp.getEducationId())
-                .orElseThrow(() -> new IncompleteProfileException("Incomplete Contact Details"));
+                .orElseThrow(() -> new IncompleteProfileException("Incomplete Education Details"));
 
         FamilyBackground fb=  familyBackgroundRepository.findById(cp.getFamilyBackgroundId())
-                .orElseThrow(() -> new IncompleteProfileException("Incomplete Contact Details"));
+                .orElseThrow(() -> new IncompleteProfileException("Incomplete Family Background Details"));
 
         return CompleteProfileMapper.toBioDataDTO(up, ed, hd, fb, pe);
     }
